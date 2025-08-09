@@ -48,7 +48,12 @@ class _DraggableCardState extends State<DraggableCard> {
             ),
             onDragEnd: (details) {
               setState(() {
-                position = details.offset;
+                // Calculate the new position relative to the Stack
+                final RenderBox stackBox =
+                    context.findRenderObject() as RenderBox;
+                final Offset stackPosition =
+                    stackBox.localToGlobal(Offset.zero);
+                position = details.offset - stackPosition;
               });
             },
             child: Container(
