@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/src/common/showcase_card.dart';
 import 'package:interesting_flutter/src/data_display/widgets/animated_chart.dart';
-import 'package:interesting_flutter/src/data_display/widgets/animated_pie_chart.dart';
 import 'package:interesting_flutter/src/data_display/widgets/animated_line_chart.dart';
+import 'package:interesting_flutter/src/data_display/widgets/animated_pie_chart.dart';
 import 'package:interesting_flutter/src/data_display/widgets/data_table.dart';
 import 'package:interesting_flutter/src/data_display/widgets/statistics_cards.dart';
 
@@ -20,32 +20,32 @@ class DataDisplayShowcase extends StatelessWidget {
           horizontalOffset: 50.0,
           child: FadeInAnimation(child: widget),
         ),
-        children: const [
-          AnimatedShowcaseCard(
+        children: [
+          const AnimatedShowcaseCard(
             title: 'Bar Chart',
             description: 'Animated bar chart with elastic animation',
             child: AnimatedChart(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Pie Chart',
             description: 'Interactive pie chart with rotation and legends',
             child: AnimatedPieChart(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Line Chart',
             description:
                 'Smooth line chart with gradient fill and animated drawing',
             child: AnimatedLineChart(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Statistics Cards',
             description: 'Animated metric cards with trending indicators',
             child: StatisticsCards(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Data Table',
             description: 'Sortable data table with hover effects and styling',

@@ -69,57 +69,60 @@ class _AnimatedLineChartState extends State<AnimatedLineChart>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: CustomPaint(
-                  size: Size.infinite,
-                  painter: LineChartPainter(_data, _animation.value),
+        return Container(
+          height: 250,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: CustomPaint(
+                    size: Size.infinite,
+                    painter: LineChartPainter(_data, _animation.value),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: _labels
+                        .take((_labels.length * _animation.value).ceil())
+                        .map((label) {
+                      return Text(
+                        label,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: _labels
-                      .take((_labels.length * _animation.value).ceil())
-                      .map((label) {
-                    return Text(
-                      label,
-                      style: const TextStyle(
-                        fontSize: 12,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.trending_up, color: Colors.blue, size: 16),
+                    SizedBox(width: 8),
+                    Text(
+                      'Revenue Growth',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                         color: Colors.grey,
                       ),
-                    );
-                  }).toList(),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.trending_up, color: Colors.blue, size: 16),
-                  SizedBox(width: 8),
-                  Text(
-                    'Revenue Growth',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

@@ -69,76 +69,80 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
     return AnimatedBuilder(
       animation: Listenable.merge([_animation, _rotationAnimation]),
       builder: (context, child) {
-        return Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Center(
-                child: Transform.rotate(
-                  angle: _rotationAnimation.value * 0.1, // Slow rotation
-                  child: CustomPaint(
-                    size: const Size(200, 200),
-                    painter: PieChartPainter(_data, _animation.value),
+        return Container(
+          height: 300,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Center(
+                  child: Transform.rotate(
+                    angle: _rotationAnimation.value * 0.1, // Slow rotation
+                    child: CustomPaint(
+                      size: const Size(150, 150),
+                      painter: PieChartPainter(_data, _animation.value),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Device Usage',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: _data.map((data) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 12,
-                                    height: 12,
-                                    decoration: BoxDecoration(
-                                      color: data.color,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      data.label,
-                                      style: const TextStyle(fontSize: 12),
-                                    ),
-                                  ),
-                                  Text(
-                                    '${data.value}%',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Device Usage',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: _data.map((data) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 12,
+                                      height: 12,
+                                      decoration: BoxDecoration(
+                                        color: data.color,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        data.label,
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${data.value}%',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
