@@ -16,30 +16,33 @@ class StaggeredGridExample extends StatelessWidget {
 
     final heights = [80.0, 120.0, 100.0, 140.0, 90.0, 110.0];
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(8),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: List.generate(6, (index) {
-          return Container(
-            width: (MediaQuery.of(context).size.width - 80) / 2,
-            height: heights[index % heights.length],
-            decoration: BoxDecoration(
-              color: colors[index % colors.length],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Text(
-                'Item ${index + 1}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+    return SizedBox(
+      height: 200, // Fixed height for the container
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: List.generate(6, (index) {
+            return Container(
+              width: (MediaQuery.of(context).size.width - 80) / 2,
+              height: heights[index % heights.length],
+              decoration: BoxDecoration(
+                color: colors[index % colors.length],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  'Item ${index + 1}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
