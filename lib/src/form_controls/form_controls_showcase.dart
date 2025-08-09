@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:interesting_flutter/src/form_controls/widgets/image_upload_field.dart';
+
 import '../common/showcase_card.dart';
 import 'widgets/animated_text_fields.dart';
 import 'widgets/custom_switches.dart';
@@ -19,29 +23,41 @@ class FormControlsShowcase extends StatelessWidget {
           horizontalOffset: 50.0,
           child: FadeInAnimation(child: widget),
         ),
-        children: const [
-          AnimatedShowcaseCard(
+        children: [
+          const AnimatedShowcaseCard(
             title: 'Animated Text Fields',
             description: 'Text fields with smooth animations',
             child: AnimatedTextFields(),
           ),
-          SizedBox(height: 16),
-          AnimatedShowcaseCard(
+          const SizedBox(height: 16),
+          const AnimatedShowcaseCard(
             title: 'Custom Switches',
             description: 'Beautiful animated toggle switches',
             child: CustomSwitches(),
           ),
-          SizedBox(height: 16),
-          AnimatedShowcaseCard(
+          const SizedBox(height: 16),
+          const AnimatedShowcaseCard(
             title: 'Range Slider',
             description: 'Dual-handle range slider',
             child: RangeSliderExample(),
           ),
-          SizedBox(height: 16),
-          AnimatedShowcaseCard(
+          const SizedBox(height: 16),
+          const AnimatedShowcaseCard(
             title: 'Rating Widget',
             description: 'Interactive star rating component',
             child: RatingWidget(),
+          ),
+          const SizedBox(height: 16),
+          AnimatedShowcaseCard(
+            title: 'Image Upload',
+            description: 'Image upload field with animations',
+            child: ImageUploadField(
+              label: 'Upload Image',
+              hint: 'Tap to select an image',
+              onImageSelected: (File? image) {
+                // Handle image selection
+              },
+            ),
           ),
         ],
       ),

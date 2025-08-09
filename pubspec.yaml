@@ -47,6 +47,9 @@ dependencies:
   # For smooth page indicators
   smooth_page_indicator: ^1.1.0
 
+  # For image picking from camera and gallery
+  image_picker: ^1.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
