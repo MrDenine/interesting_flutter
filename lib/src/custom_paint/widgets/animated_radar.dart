@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class AnimatedRadar extends StatefulWidget {
-  const AnimatedRadar({Key? key}) : super(key: key);
+  const AnimatedRadar({super.key});
 
   @override
   State<AnimatedRadar> createState() => _AnimatedRadarState();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class SpiralGalaxy extends StatefulWidget {
-  const SpiralGalaxy({Key? key}) : super(key: key);
+  const SpiralGalaxy({super.key});
 
   @override
   State<SpiralGalaxy> createState() => _SpiralGalaxyState();

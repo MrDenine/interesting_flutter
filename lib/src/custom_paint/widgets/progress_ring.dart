@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class ProgressRing extends StatefulWidget {
-  const ProgressRing({Key? key}) : super(key: key);
+  const ProgressRing({super.key});
 
   @override
   State<ProgressRing> createState() => _ProgressRingState();

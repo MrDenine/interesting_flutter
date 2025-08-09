@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class WaveAnimation extends StatefulWidget {
-  const WaveAnimation({Key? key}) : super(key: key);
+  const WaveAnimation({super.key});
 
   @override
   State<WaveAnimation> createState() => _WaveAnimationState();
