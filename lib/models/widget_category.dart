@@ -80,6 +80,13 @@ class WidgetCategory {
         color: Color(0xFF009688),
         type: 'maps_location',
       ),
+      const WidgetCategory(
+        name: 'Custom Showcase',
+        description: 'Unique custom widgets and effects',
+        icon: Icons.star,
+        color: Color(0xFF3F51B5),
+        type: 'custom_showcase',
+      ),
     ];
   }
 }
