@@ -19,25 +19,25 @@ class InteractiveWidgetsShowcase extends StatelessWidget {
           horizontalOffset: 50.0,
           child: FadeInAnimation(child: widget),
         ),
-        children: const [
+        children: [
           AnimatedShowcaseCard(
             title: 'Draggable Card',
             description: 'Card that can be dragged around the screen',
             child: DraggableCard(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Swipe to Delete',
             description: 'Swipe gesture to reveal delete action',
             child: SwipeToDelete(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Interactive Button',
             description: 'Button with ripple effect and scale animation',
             child: InteractiveButton(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           AnimatedShowcaseCard(
             title: 'Gesture Detector',
             description: 'Multi-touch gesture recognition',

@@ -13,86 +13,89 @@ class _GestureCanvasState extends State<GestureCanvas> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onPanStart: (details) {
-              setState(() {
-                _points = [details.localPosition];
-                _gestureType = 'Drawing';
-              });
-            },
-            onPanUpdate: (details) {
-              setState(() {
-                _points.add(details.localPosition);
-              });
-            },
-            onPanEnd: (details) {
-              setState(() {
-                _gestureType = 'Finished';
-              });
-            },
-            onTap: () {
-              setState(() {
-                _gestureType = 'Tap';
-                _points.clear();
-              });
-            },
-            onDoubleTap: () {
-              setState(() {
-                _gestureType = 'Double Tap';
-                _points.clear();
-              });
-            },
-            onLongPress: () {
-              setState(() {
-                _gestureType = 'Long Press';
-                _points.clear();
-              });
-            },
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: Colors.grey.withValues(alpha: 0.3),
-                  width: 2,
-                  style: BorderStyle.solid,
+    return Container(
+      height: 300,
+      child: Column(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onPanStart: (details) {
+                setState(() {
+                  _points = [details.localPosition];
+                  _gestureType = 'Drawing';
+                });
+              },
+              onPanUpdate: (details) {
+                setState(() {
+                  _points.add(details.localPosition);
+                });
+              },
+              onPanEnd: (details) {
+                setState(() {
+                  _gestureType = 'Finished';
+                });
+              },
+              onTap: () {
+                setState(() {
+                  _gestureType = 'Tap';
+                  _points.clear();
+                });
+              },
+              onDoubleTap: () {
+                setState(() {
+                  _gestureType = 'Double Tap';
+                  _points.clear();
+                });
+              },
+              onLongPress: () {
+                setState(() {
+                  _gestureType = 'Long Press';
+                  _points.clear();
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    width: 2,
+                    style: BorderStyle.solid,
+                  ),
                 ),
-              ),
-              child: CustomPaint(
-                painter: GesturePainter(_points),
-                child: const SizedBox.expand(),
+                child: CustomPaint(
+                  painter: GesturePainter(_points),
+                ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Gesture: $_gestureType',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _points.clear();
-                    _gestureType = 'None';
-                  });
-                },
-                child: const Text('Clear'),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Gesture: $_gestureType',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _points.clear();
+                      _gestureType = 'None';
+                    });
+                  },
+                  child: const Text('Clear'),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
