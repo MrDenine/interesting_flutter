@@ -1,0 +1,62 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter Debug (No Impeller)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--no-enable-impeller"
+            ],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter Debug (Pixel 9)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--no-enable-impeller",
+                "-d",
+                "emulator-5554"
+            ],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter Profile (No Impeller)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--no-enable-impeller"
+            ],
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Flutter Release (No Impeller)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--no-enable-impeller"
+            ],
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter Debug (Web)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-hostname",
+                "localhost",
+                "--web-port",
+                "8080"
+            ],
+            "flutterMode": "debug"
+        }
+    ]
+}
