@@ -73,6 +73,13 @@ class WidgetCategory {
         color: Color(0xFF795548),
         type: 'form_controls',
       ),
+      const WidgetCategory(
+        name: 'Maps_Location',
+        description: 'Maps, markers, and geolocation',
+        icon: Icons.map,
+        color: Color(0xFF009688),
+        type: 'maps_location',
+      ),
     ];
   }
 }

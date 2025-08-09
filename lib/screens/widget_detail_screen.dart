@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/src/animations/animated_widgets_showcase.dart';
+import 'package:interesting_flutter/src/maps_location/maps_location_showcase.dart';
 
 import '../models/widget_category.dart';
 import '../src/custom_paint/custom_paint_showcase.dart';
@@ -116,6 +117,8 @@ class WidgetDetailScreen extends StatelessWidget {
         return const LoadingWidgetsShowcase();
       case 'data_display':
         return const DataDisplayShowcase();
+      case 'maps_location':
+        return const MapsLocationShowcase();
       default:
         return const Center(
           child: Text('Coming Soon!'),

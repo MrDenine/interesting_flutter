@@ -4,7 +4,7 @@ A comprehensive Flutter application showcasing interesting and interactive widge
 
 ## 🌟 Features
 
-This app demonstrates 8 major categories of Flutter widgets with over 35 interactive examples, complete with an animated splash screen and professional navigation system:
+This app demonstrates 9 major categories of Flutter widgets with over 40 interactive examples, complete with an animated splash screen and professional navigation system:
 
 ### � App Experience
 
@@ -67,12 +67,19 @@ This app demonstrates 8 major categories of Flutter widgets with over 35 interac
    - **Data Table** - 2-directional scrolling table with sorting and styling
 
 8. **Form Controls** 📝 - Advanced form inputs and controls
+
    - **Animated Text Fields** - Focus effects with floating labels
    - **Custom Switches** - Smooth toggle animations with haptic feedback
    - **Range Slider** - Dual-thumb slider for value ranges
    - **Rating Widget** - Interactive star ratings with animations
    - **🆕 Image Upload** - Camera and gallery integration with real device access
    - **🆕 Date Pickers** - Multiple picker types: Material, Cupertino, Range, Time, DateTime
+
+9. **🆕 Maps & Location** 🗺️ - Interactive maps and geolocation features
+   - **Flutter Map Integration** - Interactive maps with markers and polylines using OpenStreetMap
+   - **Distance Measurement** - Tap-to-measure functionality with real-time distance calculation
+   - **Custom Markers** - Animated custom markers with detailed location information
+   - **Geolocation Services** - Location-based features and map controls
 
 ## 🚀 Getting Started
 
@@ -142,7 +149,7 @@ flutter run -d emulator-5554
 ### Navigation
 
 1. **🎬 Splash Screen**: Beautiful animated intro with logo, text, and progress animations
-2. **🏠 Home Screen**: Browse through 8 widget categories with animated cards
+2. **🏠 Home Screen**: Browse through 9 widget categories with animated cards
 3. **📂 Category Selection**: Tap any category to explore detailed widget examples
 4. **🎯 Interactive Examples**: Each widget is fully interactive:
    - **Tap** buttons and cards for animations
@@ -152,13 +159,15 @@ flutter run -d emulator-5554
    - **Sort** table columns by clicking headers
    - **📸 Take Photos** using device camera or select from gallery
    - **📅 Pick Dates** with various picker styles and formats
+   - **🗺️ Interact with Maps** - pan, zoom, tap markers, and measure distances
 
 ### Special Features
 
 - **🎬 Professional Splash Screen**: Multi-controller animations with logo, text, and progress indicators
 - **📸 Real Camera Integration**: Native device camera and gallery access for image upload
 - **📅 Comprehensive Date Pickers**: Material, Cupertino, Range, Time, and DateTime pickers
-- **📊 2-Directional Scrolling**: Data tables support both horizontal and vertical scrolling
+- **�️ Interactive Maps**: Flutter Map integration with OpenStreetMap tiles and custom markers
+- **�📊 2-Directional Scrolling**: Data tables support both horizontal and vertical scrolling
 - **🎯 Real-time Animations**: All animations run at 60fps with smooth transitions
 - **📱 Responsive Design**: Adapts to different screen sizes and orientations
 - **🎨 Material Design 3**: Modern UI with dynamic theming and proper navigation
@@ -214,7 +223,13 @@ lib/
         ├── form_controls_showcase.dart
         └── widgets/
             ├── image_upload.dart        # 🆕 Camera & gallery integration
-            └── date_picker_showcase.dart # 🆕 Multiple date picker types
+            ├── date_picker_showcase.dart # 🆕 Multiple date picker types
+    └── maps_location/                   # 🆕 Maps and geolocation
+        ├── maps_location_showcase.dart
+        └── widgets/
+            ├── flutter_map.dart         # 🆕 Interactive map with markers
+            ├── interactive_map.dart     # 🆕 Distance measurement functionality
+            └── custom_markers_map.dart  # 🆕 Custom animated markers
 ```
 
 ## 📦 Dependencies
@@ -229,6 +244,8 @@ dependencies:
   smooth_page_indicator: ^1.1.0           # Page indicators
   lottie: ^2.7.0                         # Lottie animations
   image_picker: ^1.0.7                   # 🆕 Camera and gallery access
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1                   # 🆕 Maps and geolocation functionality
 
 dev_dependencies:
   flutter_test: sdk: flutter
