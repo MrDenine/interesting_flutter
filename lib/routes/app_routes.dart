@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/splash_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/widget_detail_screen.dart';
 import '../models/widget_category.dart';
@@ -6,7 +7,8 @@ import '../services/navigation_service.dart';
 
 /// App route names as constants for type safety
 class AppRoutes {
-  static const String home = '/';
+  static const String splash = '/';
+  static const String home = '/home';
   static const String widgetDetail = '/widget-detail';
 
   /// Private constructor to prevent instantiation
@@ -18,6 +20,12 @@ class AppRouteGenerator {
   /// Generate routes based on route settings
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.splash:
+        return _createRoute(
+          const SplashScreen(),
+          settings: settings,
+        );
+
       case AppRoutes.home:
         return _createRoute(
           const HomeScreen(),

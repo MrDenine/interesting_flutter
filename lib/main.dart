@@ -22,7 +22,7 @@ class InterestingFlutterApp extends StatelessWidget {
         AppNavigationObserver(),
       ],
       // Use named routes instead of home
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRouteGenerator.generateRoute,
       // Handle unknown routes
       onUnknownRoute: (settings) => AppRouteGenerator.generateRoute(
