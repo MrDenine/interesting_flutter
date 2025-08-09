@@ -69,7 +69,7 @@ class _AnimatedLineChartState extends State<AnimatedLineChart>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Container(
+        return SizedBox(
           height: 250,
           child: Column(
             children: [

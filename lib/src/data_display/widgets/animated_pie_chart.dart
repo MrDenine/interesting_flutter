@@ -69,7 +69,7 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
     return AnimatedBuilder(
       animation: Listenable.merge([_animation, _rotationAnimation]),
       builder: (context, child) {
-        return Container(
+        return SizedBox(
           height: 300,
           child: Column(
             children: [

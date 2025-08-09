@@ -53,7 +53,7 @@ class _AnimatedChartState extends State<AnimatedChart>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Container(
+        return SizedBox(
           height: 200,
           child: Column(
             children: [

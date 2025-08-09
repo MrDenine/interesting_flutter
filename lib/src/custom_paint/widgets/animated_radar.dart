@@ -30,7 +30,7 @@ class _AnimatedRadarState extends State<AnimatedRadar>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 200,
         height: 200,
         child: AnimatedBuilder(
