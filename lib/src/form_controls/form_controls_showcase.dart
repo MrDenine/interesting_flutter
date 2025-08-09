@@ -7,6 +7,7 @@ import 'package:interesting_flutter/src/form_controls/widgets/image_upload_field
 import '../common/showcase_card.dart';
 import 'widgets/animated_text_fields.dart';
 import 'widgets/custom_switches.dart';
+import 'widgets/date_picker_fields.dart';
 import 'widgets/range_slider_example.dart';
 import 'widgets/rating_widget.dart';
 
@@ -46,6 +47,12 @@ class FormControlsShowcase extends StatelessWidget {
             title: 'Rating Widget',
             description: 'Interactive star rating component',
             child: RatingWidget(),
+          ),
+          const SizedBox(height: 16),
+          const AnimatedShowcaseCard(
+            title: 'Date Pickers',
+            description: 'Various date, time, and range pickers',
+            child: DatePickerFields(),
           ),
           const SizedBox(height: 16),
           AnimatedShowcaseCard(

@@ -40,7 +40,7 @@ class AnimatedShowcaseCard extends StatelessWidget {
             const SizedBox(height: 20),
             Container(
               width: double.infinity,
-              height: 300, // Fixed height for better display
+              // height: 300, // Fixed height for better display
               decoration: BoxDecoration(
                 color: Theme.of(context)
                     .colorScheme
