@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:interesting_flutter/data/models/widget_category.dart';
+import 'package:interesting_flutter/data/models/category_model.dart';
 
 class CategoryCard extends StatefulWidget {
-  final WidgetCategory category;
+  final CategoryModel category;
   final VoidCallback onTap;
 
   const CategoryCard({

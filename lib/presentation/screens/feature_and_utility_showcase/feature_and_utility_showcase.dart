@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:interesting_flutter/data/constants/widgets_categories.dart';
+import 'package:interesting_flutter/data/constants/feature_utility_category.dart';
 import 'package:interesting_flutter/presentation/widgets/common/category_card.dart';
 import 'package:interesting_flutter/routes/app_routes.dart';
 
-class WidgetCategoryScreen extends StatelessWidget {
-  const WidgetCategoryScreen({super.key});
+class FeatureAndUtilityShowcase extends StatefulWidget {
+  const FeatureAndUtilityShowcase({super.key});
 
+  @override
+  State<FeatureAndUtilityShowcase> createState() =>
+      _FeatureAndUtilityShowcaseState();
+}
+
+class _FeatureAndUtilityShowcaseState extends State<FeatureAndUtilityShowcase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +72,9 @@ class WidgetCategoryScreen extends StatelessWidget {
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
                       ),
-                      itemCount: widgetCategories.length,
+                      itemCount: featuresAndUtilityCategories.length,
                       itemBuilder: (context, index) {
-                        final category = widgetCategories[index];
+                        final category = featuresAndUtilityCategories[index];
                         return AnimationConfiguration.staggeredGrid(
                           position: index,
                           duration: const Duration(milliseconds: 500),

@@ -3,7 +3,7 @@ import '../presentation/screens/splash_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/widget_showcase/widget_category_screen.dart';
 import '../presentation/screens/widget_showcase/widget_detail_screen.dart';
-import '../data/models/widget_category.dart';
+import '../data/models/category_model.dart';
 import '../core/services/navigation/navigation_service.dart';
 import 'route_transitions.dart';
 
@@ -13,6 +13,8 @@ class AppRoutes {
   static const String home = '/home';
   static const String widgetCategory = '/widget-category';
   static const String widgetDetail = '/widget-detail';
+  static const String featureAndUtilityCategory =
+      '/feature-and-utility-category';
 
   /// Private constructor to prevent instantiation
   AppRoutes._();
@@ -45,7 +47,7 @@ class AppRouteGenerator {
         );
 
       case AppRoutes.widgetDetail:
-        final category = settings.arguments as WidgetCategory?;
+        final category = settings.arguments as CategoryModel?;
         if (category == null) {
           return _createErrorRoute('Widget category is required');
         }
@@ -141,7 +143,7 @@ class AppNavigator {
   /// Navigate to widget detail screen
   static Future<void> goToWidgetDetail(
     BuildContext context,
-    WidgetCategory category,
+    CategoryModel category,
   ) {
     return Navigator.pushNamed(
       context,
@@ -183,6 +185,11 @@ class AppNavigator {
     return navigationService.navigateTo(AppRoutes.widgetCategory);
   }
 
+  static Future<void> goToFeatureAndUtilityCategory() {
+    final navigationService = NavigationService.instance;
+    return navigationService.navigateTo(AppRoutes.featureAndUtilityCategory);
+  }
+
   /// Navigate to home screen globally
   static Future<void> goHomeGlobal() {
     final navigationService = NavigationService.instance;
@@ -190,7 +197,7 @@ class AppNavigator {
   }
 
   /// Navigate to widget detail screen globally
-  static Future<void> goToWidgetDetailGlobal(WidgetCategory category) {
+  static Future<void> goToWidgetDetailGlobal(CategoryModel category) {
     final navigationService = NavigationService.instance;
     return navigationService.navigateTo(
       AppRoutes.widgetDetail,
