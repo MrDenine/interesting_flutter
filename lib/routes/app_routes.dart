@@ -4,6 +4,7 @@ import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/widget_detail_screen.dart';
 import '../data/models/widget_category.dart';
 import '../core/services/navigation/navigation_service.dart';
+import 'route_transitions.dart';
 
 /// App route names as constants for type safety
 class AppRoutes {
@@ -24,12 +25,14 @@ class AppRouteGenerator {
         return _createRoute(
           const SplashScreen(),
           settings: settings,
+          transitionType: PageTransitionType.fade,
         );
 
       case AppRoutes.home:
         return _createRoute(
           const HomeScreen(),
           settings: settings,
+          transitionType: PageTransitionType.slideFromRight,
         );
 
       case AppRoutes.widgetDetail:
@@ -40,6 +43,7 @@ class AppRouteGenerator {
         return _createRoute(
           WidgetDetailScreen(category: category),
           settings: settings,
+          transitionType: PageTransitionType.slideFromRight,
         );
 
       default:
@@ -47,39 +51,25 @@ class AppRouteGenerator {
     }
   }
 
-  /// Create a custom page route with slide transition
+  /// Create a custom page route with configurable transitions
   static PageRoute _createRoute(
     Widget child, {
     required RouteSettings settings,
+    PageTransitionType transitionType = PageTransitionType.slideFromRight,
     Duration transitionDuration = const Duration(milliseconds: 300),
   }) {
-    return PageRouteBuilder(
+    return CustomPageRoute(
+      child: child,
       settings: settings,
-      pageBuilder: (context, animation, secondaryAnimation) => child,
+      transitionType: transitionType,
       transitionDuration: transitionDuration,
-      reverseTransitionDuration: transitionDuration,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        // Slide transition from right to left
-        const begin = Offset(1.0, 0.0);
-        const end = Offset.zero;
-        const curve = Curves.easeInOut;
-
-        var tween = Tween(begin: begin, end: end).chain(
-          CurveTween(curve: curve),
-        );
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 
   /// Create error route for unknown routes
   static PageRoute _createErrorRoute(String message) {
     return MaterialPageRoute(
-      builder: (_) => Scaffold(
+      builder: (context) => Scaffold(
         appBar: AppBar(
           title: const Text('Error'),
           backgroundColor: Colors.red,
@@ -113,7 +103,7 @@ class AppRouteGenerator {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                    _,
+                    context,
                     AppRoutes.home,
                     (route) => false,
                   ),

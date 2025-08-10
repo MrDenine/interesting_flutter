@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:interesting_flutter/routes/app_routes.dart';
 import 'dart:async';
-import '../../routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration splashDuration;

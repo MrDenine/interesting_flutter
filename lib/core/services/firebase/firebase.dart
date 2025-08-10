@@ -10,7 +10,7 @@
 ///
 /// Usage:
 /// ```dart
-/// import 'package:interesting_flutter/shared/services/firebase/firebase.dart';
+/// import 'package:interesting_flutter/core/services/firebase/firebase.dart';
 ///
 /// // Initialize Firebase
 /// await FirebaseService.instance.initialize();

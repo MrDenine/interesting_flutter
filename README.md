@@ -4,7 +4,7 @@ A comprehensive Flutter application showcasing interesting and interactive widge
 
 ## 🌟 Features
 
-This app demonstrates 10 major categories of Flutter widgets with over 50 interactive examples, complete with an animated splash screen and professional navigation system:
+This app demonstrates 9 major categories of Flutter widgets with over 45 interactive examples, complete with an animated splash screen and professional navigation system:
 
 ### � App Experience
 
@@ -83,13 +83,6 @@ This app demonstrates 10 major categories of Flutter widgets with over 50 intera
    - **Distance Measurement** - Tap-to-measure functionality with real-time distance calculation
    - **Custom Markers** - Animated custom markers with detailed location information
    - **Geolocation Services** - Location-based features and map controls
-
-10. **🆕 Firebase Utils** 🔥 - Firebase connectivity and utilities
-    - **Connection Management** - Singleton-based Firebase service with platform detection
-    - **Health Monitoring** - Comprehensive health checks and status reporting
-    - **Connectivity Utils** - Internet connectivity testing and Firebase availability checks
-    - **Diagnostics Dashboard** - Real-time metrics, latency measurement, and error reporting
-    - **Platform Support** - Cross-platform Firebase configuration for Web, Android, iOS, macOS, Windows
 
 ## 🚀 Getting Started
 

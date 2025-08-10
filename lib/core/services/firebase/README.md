@@ -100,9 +100,9 @@ final metrics = await FirebaseUtils.getConnectionMetrics();
 final resetSuccess = await FirebaseUtils.resetConnection();
 ```
 
-### 4. Firebase Connectivity Example (`firebase_connectivity_example.dart`)
+### 4. Firebase Integration Example
 
-A complete Flutter widget demonstrating Firebase utilities usage.
+A Flutter widget demonstrating Firebase utilities usage can be created in your presentation layer.
 
 **Features:**
 
@@ -208,7 +208,7 @@ static const web = FirebaseOptions(
 ## Integration Example
 
 ```dart
-import 'package:interesting_flutter/shared/services/firebase/firebase.dart';
+import 'package:interesting_flutter/core/services/firebase/firebase.dart';
 
 class MyApp extends StatefulWidget {
   @override

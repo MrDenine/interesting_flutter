@@ -14,26 +14,17 @@ enum PageTransitionType {
 class CustomPageRoute<T> extends PageRouteBuilder<T> {
   final Widget child;
   final PageTransitionType transitionType;
-
-  @override
-  final Duration transitionDuration;
-
-  @override
-  final Duration reverseTransitionDuration;
-
   final Curve curve;
 
   CustomPageRoute({
     required this.child,
     this.transitionType = PageTransitionType.slideFromRight,
-    this.transitionDuration = const Duration(milliseconds: 300),
-    this.reverseTransitionDuration = const Duration(milliseconds: 300),
+    super.transitionDuration = const Duration(milliseconds: 300),
+    super.reverseTransitionDuration = const Duration(milliseconds: 300),
     this.curve = Curves.easeInOut,
     super.settings,
   }) : super(
           pageBuilder: (context, animation, secondaryAnimation) => child,
-          transitionDuration: transitionDuration,
-          reverseTransitionDuration: reverseTransitionDuration,
         );
 
   @override
