@@ -20,6 +20,33 @@ class WidgetDetailScreen extends StatelessWidget {
     required this.category,
   });
 
+  Widget _buildWidgetShowcase(String type) {
+    switch (type) {
+      case 'animations':
+        return const AnimatedWidgetsShowcase();
+      case 'custom_paint':
+        return const CustomPaintShowcase();
+      case 'interactive':
+        return const InteractiveWidgetsShowcase();
+      case 'layout':
+        return const LayoutWidgetsShowcase();
+      case 'effects':
+        return const VisualEffectsShowcase();
+      case 'form_controls':
+        return const FormControlsShowcase();
+      case 'loading':
+        return const LoadingWidgetsShowcase();
+      case 'data_display':
+        return const DataDisplayShowcase();
+      case 'maps_location':
+        return const MapsLocationShowcase();
+      default:
+        return const Center(
+          child: Text('Coming Soon!'),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,32 +124,5 @@ class WidgetDetailScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildWidgetShowcase(String type) {
-    switch (type) {
-      case 'animations':
-        return const AnimatedWidgetsShowcase();
-      case 'custom_paint':
-        return const CustomPaintShowcase();
-      case 'interactive':
-        return const InteractiveWidgetsShowcase();
-      case 'layout':
-        return const LayoutWidgetsShowcase();
-      case 'effects':
-        return const VisualEffectsShowcase();
-      case 'form_controls':
-        return const FormControlsShowcase();
-      case 'loading':
-        return const LoadingWidgetsShowcase();
-      case 'data_display':
-        return const DataDisplayShowcase();
-      case 'maps_location':
-        return const MapsLocationShowcase();
-      default:
-        return const Center(
-          child: Text('Coming Soon!'),
-        );
-    }
   }
 }
