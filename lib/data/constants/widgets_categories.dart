@@ -59,11 +59,18 @@ const List<CategoryModel> widgetCategories = [
     type: 'form_controls',
   ),
   CategoryModel(
-    name: 'Maps_Location',
+    name: 'Maps & Location',
     description: 'Maps, markers, and geolocation',
     icon: Icons.map,
     color: Color(0xFF009688),
     type: 'maps_location',
+  ),
+  CategoryModel(
+    name: 'Modal & Alerts',
+    description: 'Dialogs, modals, and alert components',
+    icon: Icons.open_in_new,
+    color: Color(0xFFFF5722),
+    type: 'modal',
   ),
   CategoryModel(
     name: 'Custom Showcase',

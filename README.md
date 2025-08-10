@@ -84,6 +84,15 @@ This app demonstrates 9 major categories of Flutter widgets with over 45 interac
    - **Custom Markers** - Animated custom markers with detailed location information
    - **Geolocation Services** - Location-based features and map controls
 
+10. **🆕 Modal & Alerts** 🔔 - Dialogs, modals, and alert components
+
+    - **Alert Dialog** - Simple informational alerts with customizable styling
+    - **Confirmation Dialog** - Action confirmation with destructive action styling
+    - **Custom Modal** - Beautiful custom-designed modals with gradients and animations
+    - **Bottom Sheet** - Slide-up modal with scrollable content and gesture handling
+    - **Loading Dialog** - Progress indicators with auto-dismiss functionality
+    - **Input Dialog** - Text input collection with validation and keyboard handling
+
 ## 🚀 Getting Started
 
 ### Prerequisites
