@@ -3,14 +3,14 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/presentation/widgets/animations/animated_widgets_showcase.dart';
 import 'package:interesting_flutter/presentation/widgets/maps_location/maps_location_showcase.dart';
 
-import '../../data/models/widget_category.dart';
-import '../widgets/custom_paint/custom_paint_showcase.dart';
-import '../widgets/data_display/data_display_showcase.dart';
-import '../widgets/effects/visual_effects_showcase.dart';
-import '../widgets/form_controls/form_controls_showcase.dart';
-import '../widgets/interactive/interactive_widgets_showcase.dart';
-import '../widgets/layout/layout_widgets_showcase.dart';
-import '../widgets/loading/loading_widgets_showcase.dart';
+import '../../../data/models/widget_category.dart';
+import '../../widgets/custom_paint/custom_paint_showcase.dart';
+import '../../widgets/data_display/data_display_showcase.dart';
+import '../../widgets/effects/visual_effects_showcase.dart';
+import '../../widgets/form_controls/form_controls_showcase.dart';
+import '../../widgets/interactive/interactive_widgets_showcase.dart';
+import '../../widgets/layout/layout_widgets_showcase.dart';
+import '../../widgets/loading/loading_widgets_showcase.dart';
 
 class WidgetDetailScreen extends StatelessWidget {
   final WidgetCategory category;

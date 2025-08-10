@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../presentation/screens/splash_screen.dart';
 import '../presentation/screens/home_screen.dart';
-import '../presentation/screens/widget_detail_screen.dart';
+import '../presentation/screens/widget_showcase/widget_category_screen.dart';
+import '../presentation/screens/widget_showcase/widget_detail_screen.dart';
 import '../data/models/widget_category.dart';
 import '../core/services/navigation/navigation_service.dart';
 import 'route_transitions.dart';
@@ -10,6 +11,7 @@ import 'route_transitions.dart';
 class AppRoutes {
   static const String splash = '/';
   static const String home = '/home';
+  static const String widgetCategory = '/widget-category';
   static const String widgetDetail = '/widget-detail';
 
   /// Private constructor to prevent instantiation
@@ -31,6 +33,13 @@ class AppRouteGenerator {
       case AppRoutes.home:
         return _createRoute(
           const HomeScreen(),
+          settings: settings,
+          transitionType: PageTransitionType.slideFromRight,
+        );
+
+      case AppRoutes.widgetCategory:
+        return _createRoute(
+          const WidgetCategoryScreen(),
           settings: settings,
           transitionType: PageTransitionType.slideFromRight,
         );
@@ -148,6 +157,11 @@ class AppNavigator {
     }
   }
 
+  /// Navigate to widget category screen
+  static Future<void> goToWidgetCategory(BuildContext context) {
+    return Navigator.pushNamed(context, AppRoutes.widgetCategory);
+  }
+
   /// Replace current route with new route
   static Future<void> pushReplacement(
     BuildContext context,
@@ -162,6 +176,12 @@ class AppNavigator {
   }
 
   /// Global navigation methods (using NavigationService)
+
+  /// Navigate to widget category screen globally
+  static Future<void> goToWidgetCategoryGlobal() {
+    final navigationService = NavigationService.instance;
+    return navigationService.navigateTo(AppRoutes.widgetCategory);
+  }
 
   /// Navigate to home screen globally
   static Future<void> goHomeGlobal() {
