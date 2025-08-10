@@ -1,6 +1,17 @@
 # Interesting Flutter Widgets Catalog
 
-A comprehensive Flutter application showcasing interesting and interactive widgets with beautiful animations and effects. This project demonstrates advanced Flutter techniques including custom animations, 2-directional scrolling, data visualization, real camera integration, and modern UI patterns following Material Design 3 guidelines.
+A comprehensive Flutter application showcasing interesting and interactive widgets with beautiful ### Special Features
+
+- **🎬 Professional Splash Screen**: Multi-controller animations with logo, text, and progress indicators
+- **📸 Real Camera Integration**: Native device camera and gallery access for image upload
+- **📅 Comprehensive Date Pickers**: Material, Cupertino, Range, Time, and DateTime pickers
+- **🔍 Advanced Dropdown Controls**: Searchable single-select and multiselect dropdowns with intelligent focus handling
+- **🎯 Smart Focus Management**: Automatic overlay closure when clicking outside or losing focus
+- **🗺️ Interactive Maps**: Flutter Map integration with OpenStreetMap tiles and custom markers
+- **📊 2-Directional Scrolling**: Data tables support both horizontal and vertical scrolling
+- **🎯 Real-time Animations**: All animations run at 60fps with smooth transitions
+- **📱 Responsive Design**: Adapts to different screen sizes and orientations
+- **🎨 Material Design 3**: Modern UI with dynamic theming and proper navigation and effects. This project demonstrates advanced Flutter techniques including custom animations, 2-directional scrolling, data visualization, real camera integration, and modern UI patterns following Material Design 3 guidelines.
 
 ## 🌟 Features
 
@@ -72,6 +83,8 @@ This app demonstrates 9 major categories of Flutter widgets with over 40 interac
    - **Custom Switches** - Smooth toggle animations with haptic feedback
    - **Range Slider** - Dual-thumb slider for value ranges
    - **Rating Widget** - Interactive star ratings with animations
+   - **🆕 Searchable Dropdown** - Single-select dropdown with real-time filtering and keyboard navigation
+   - **🆕 Multiselect Dropdown** - Multiple selection with chips, search, and smart focus handling
    - **🆕 Image Upload** - Camera and gallery integration with real device access
    - **🆕 Date Pickers** - Multiple picker types: Material, Cupertino, Range, Time, DateTime
 
@@ -133,7 +146,10 @@ flutter run -d android
    - **Sort** table columns by clicking headers
    - **📸 Take Photos** using device camera or select from gallery
    - **📅 Pick Dates** with various picker styles and formats
-   - **🗺️ Interact with Maps** - pan, zoom, tap markers, and measure distances
+   - **� Search and Filter** in dropdown lists with real-time results
+   - **✅ Select Multiple Options** using advanced multiselect dropdowns with chips
+   - **🎯 Smart Focus Handling** - dropdowns auto-close when clicking outside or losing focus
+   - **�🗺️ Interact with Maps** - pan, zoom, tap markers, and measure distances
 
 ### Special Features
 
@@ -196,8 +212,10 @@ lib/
     └── form_controls/                   # Input controls and forms
         ├── form_controls_showcase.dart
         └── widgets/
+            ├── dropdown_search.dart     # 🆕 Searchable single-select dropdown
+            ├── multiselect_dropdown.dart # 🆕 Advanced multiselect with chips
             ├── image_upload.dart        # 🆕 Camera & gallery integration
-            ├── date_picker_showcase.dart # 🆕 Multiple date picker types
+            └── date_picker_showcase.dart # 🆕 Multiple date picker types
     └── maps_location/                   # 🆕 Maps and geolocation
         ├── maps_location_showcase.dart
         └── widgets/
@@ -254,7 +272,9 @@ This project demonstrates:
 - **🎬 Multi-Controller Animations**: Coordinating splash screen animations with proper timing
 - **📸 Native Platform Integration**: Using image_picker for real camera and gallery access
 - **📅 Cross-Platform Date Handling**: Material and Cupertino date pickers with proper formatting
-- **📊 2-Directional Scrolling**: Nested `SingleChildScrollView` implementation
+- **� Advanced Dropdown UX**: Searchable and multiselect dropdowns with smart focus management
+- **🎯 Overlay Management**: Click-outside detection and automatic focus handling for overlays
+- **�📊 2-Directional Scrolling**: Nested `SingleChildScrollView` implementation
 - **⚡ Performance Optimization**: Memory management and smooth 60fps rendering
 - **🎨 Material Design 3**: Modern UI patterns and theming
 - **📱 Responsive Design**: Adaptive layouts for various screen sizes
@@ -265,7 +285,9 @@ This project demonstrates:
 - **🎬 Professional App Startup**: Splash screen implementation best practices
 - **📸 Media Handling**: Camera integration and image processing workflows
 - **📅 Date Selection UI**: Modern date picker patterns for forms and scheduling
-- **📊 Data Visualization**: Interactive charts and graphs for dashboards
+- **� Smart Form Controls**: Advanced dropdown patterns with search and multiselect capabilities
+- **🎯 Focus Management**: Professional overlay and dropdown behavior for enhanced UX
+- **�📊 Data Visualization**: Interactive charts and graphs for dashboards
 - **⏳ Loading States**: Professional loading animations for better UX
 - **📝 Form Controls**: Advanced input handling and validation
 - **🎯 UI/UX Patterns**: Modern interaction patterns and micro-animations
@@ -288,13 +310,14 @@ We welcome contributions! Please consider:
 ### Areas for Contribution
 
 1. **🆕 New Widget Examples**: Add innovative Flutter widgets and interactions
-2. **📸 Enhanced Media Features**: Improve camera functionality and image processing
-3. **📅 Additional Picker Types**: Add more date/time picker variations
-4. **⚡ Performance Improvements**: Optimize existing animations and memory usage
-5. **📱 Platform Support**: Enhance cross-platform compatibility
-6. **📖 Documentation**: Improve code comments and usage guides
-7. **🐛 Bug Fixes**: Report and fix issues across platforms
-8. **♿ Accessibility**: Improve accessibility features and screen reader support
+2. **� Enhanced Dropdown Features**: Add autocomplete, async data loading, or custom validation
+3. **�📸 Enhanced Media Features**: Improve camera functionality and image processing
+4. **📅 Additional Picker Types**: Add more date/time picker variations
+5. **⚡ Performance Improvements**: Optimize existing animations and memory usage
+6. **📱 Platform Support**: Enhance cross-platform compatibility
+7. **📖 Documentation**: Improve code comments and usage guides
+8. **🐛 Bug Fixes**: Report and fix issues across platforms
+9. **♿ Accessibility**: Improve accessibility features and screen reader support
 
 ### Development Guidelines
 
