@@ -116,6 +116,7 @@ flutter pub get
 ```bash
 # Android (recommended for full feature experience)
 flutter run -d android
+```
 
 ## 📱 How to Use
 
