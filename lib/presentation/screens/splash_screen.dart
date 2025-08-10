@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:interesting_flutter/presentation/widgets/animations/animated_float_icon.dart';
 import 'package:interesting_flutter/routes/app_routes.dart';
 import 'dart:async';
 
@@ -298,13 +299,33 @@ class _SplashScreenState extends State<SplashScreen>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                _buildFloatingIcon(Icons.touch_app, 0),
+                                AnimateFloatIcon(
+                                  icon: Icons.widgets,
+                                  delay: 0.0,
+                                  progressController: _progressController,
+                                  progressAnimation: _progressAnimation,
+                                ),
                                 const SizedBox(width: 15),
-                                _buildFloatingIcon(Icons.animation, 0.3),
+                                AnimateFloatIcon(
+                                  icon: Icons.animation,
+                                  delay: 0.3,
+                                  progressController: _progressController,
+                                  progressAnimation: _progressAnimation,
+                                ),
                                 const SizedBox(width: 15),
-                                _buildFloatingIcon(Icons.palette, 0.6),
+                                AnimateFloatIcon(
+                                  icon: Icons.palette,
+                                  delay: 0.6,
+                                  progressController: _progressController,
+                                  progressAnimation: _progressAnimation,
+                                ),
                                 const SizedBox(width: 15),
-                                _buildFloatingIcon(Icons.auto_awesome, 0.9),
+                                AnimateFloatIcon(
+                                  icon: Icons.auto_awesome,
+                                  delay: 0.8,
+                                  progressController: _progressController,
+                                  progressAnimation: _progressAnimation,
+                                ),
                               ],
                             ),
                           ),
@@ -326,39 +347,6 @@ class _SplashScreenState extends State<SplashScreen>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildFloatingIcon(IconData icon, double delay) {
-    return AnimatedBuilder(
-      animation: _progressController,
-      builder: (context, child) {
-        double animationValue =
-            (_progressAnimation.value - delay).clamp(0.0, 1.0);
-        return Transform.translate(
-          offset: Offset(0, -10 * animationValue),
-          child: Opacity(
-            opacity: animationValue,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 20,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
