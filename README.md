@@ -93,6 +93,7 @@ This app demonstrates 10 major categories of Flutter widgets with over 50 intera
    - **🆕 Date Pickers** - Multiple picker types: Material, Cupertino, Range, Time, DateTime
 
 9. **🆕 Maps & Location** 🗺️ - Interactive maps and geolocation features
+
    - **Flutter Map Integration** - Interactive maps with markers and polylines using OpenStreetMap
    - **Distance Measurement** - Tap-to-measure functionality with real-time distance calculation
    - **Custom Markers** - Animated custom markers with detailed location information
