@@ -8,6 +8,8 @@ import '../common/showcase_card.dart';
 import 'widgets/animated_text_fields.dart';
 import 'widgets/custom_switches.dart';
 import 'widgets/date_picker_fields.dart';
+import 'widgets/dropdown_search_demo.dart';
+import 'widgets/multiselect_dropdown_demo.dart';
 import 'widgets/range_slider_example.dart';
 import 'widgets/rating_widget.dart';
 
@@ -53,6 +55,18 @@ class FormControlsShowcase extends StatelessWidget {
             title: 'Date Pickers',
             description: 'Various date, time, and range pickers',
             child: DatePickerFields(),
+          ),
+          const SizedBox(height: 16),
+          const AnimatedShowcaseCard(
+            title: 'Dropdown Search',
+            description: 'Searchable dropdown with filtering capabilities',
+            child: DropdownSearchDemo(),
+          ),
+          const SizedBox(height: 16),
+          AnimatedShowcaseCard(
+            title: 'Multiselect Dropdown',
+            description: 'Select multiple options with search and chips',
+            child: MultiselectDropdownDemo(),
           ),
           const SizedBox(height: 16),
           AnimatedShowcaseCard(
