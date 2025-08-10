@@ -223,5 +223,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Made with ❤️ using Flutter** | **Author**: [MrDenine](https://github.com/MrDenine) | **Platforms**: Android, iOS, Web, Desktop
-
-_✨ Experience the future of Flutter development with real device integration and professional animations_
