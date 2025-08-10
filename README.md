@@ -3,19 +3,23 @@
 A comprehensive Flutter application showcasing interesting and interactive widgets with beautiful ### Special Features
 
 - **🎬 Professional Splash Screen**: Multi-controller animations with logo, text, and progress indicators
-- **📸 Real Camera Integration**: Native device camera and gallery access for image upload
+- **📸 Real Camera Integration**: Native device- **🔍 Advanced Dropdown UX**: Searchable and multiselect dropdowns with smart focus management
+- **🎯 Overlay Management**: Click-outside detection and automatic focus handling for overlays
+- **🔥 Firebase Integration**: Professional service management with health monitoring and diagnostics
+- **📊 2-Directional Scrolling**: Nested `SingleChildScrollView` implementationmera and gallery access for image upload
 - **📅 Comprehensive Date Pickers**: Material, Cupertino, Range, Time, and DateTime pickers
 - **🔍 Advanced Dropdown Controls**: Searchable single-select and multiselect dropdowns with intelligent focus handling
 - **🎯 Smart Focus Management**: Automatic overlay closure when clicking outside or losing focus
 - **🗺️ Interactive Maps**: Flutter Map integration with OpenStreetMap tiles and custom markers
-- **📊 2-Directional Scrolling**: Data tables support both horizontal and vertical scrolling
+- **� Firebase Connectivity**: Professional Firebase utilities with health monitoring and cross-platform support
+- **�📊 2-Directional Scrolling**: Data tables support both horizontal and vertical scrolling
 - **🎯 Real-time Animations**: All animations run at 60fps with smooth transitions
 - **📱 Responsive Design**: Adapts to different screen sizes and orientations
 - **🎨 Material Design 3**: Modern UI with dynamic theming and proper navigation and effects. This project demonstrates advanced Flutter techniques including custom animations, 2-directional scrolling, data visualization, real camera integration, and modern UI patterns following Material Design 3 guidelines.
 
 ## 🌟 Features
 
-This app demonstrates 9 major categories of Flutter widgets with over 40 interactive examples, complete with an animated splash screen and professional navigation system:
+This app demonstrates 10 major categories of Flutter widgets with over 50 interactive examples, complete with an animated splash screen and professional navigation system:
 
 ### � App Experience
 
@@ -93,6 +97,13 @@ This app demonstrates 9 major categories of Flutter widgets with over 40 interac
    - **Distance Measurement** - Tap-to-measure functionality with real-time distance calculation
    - **Custom Markers** - Animated custom markers with detailed location information
    - **Geolocation Services** - Location-based features and map controls
+
+10. **🆕 Firebase Utils** 🔥 - Firebase connectivity and utilities
+    - **Connection Management** - Singleton-based Firebase service with platform detection
+    - **Health Monitoring** - Comprehensive health checks and status reporting
+    - **Connectivity Utils** - Internet connectivity testing and Firebase availability checks
+    - **Diagnostics Dashboard** - Real-time metrics, latency measurement, and error reporting
+    - **Platform Support** - Cross-platform Firebase configuration for Web, Android, iOS, macOS, Windows
 
 ## 🚀 Getting Started
 
@@ -191,17 +202,27 @@ lib/
 │   │   ├── app_routes.dart               # Route definitions with splash navigation
 │   │   └── route_transitions.dart        # Custom page transitions
 │   ├── services/
-│   │   └── navigation/
-│   │       └── navigation_service.dart   # Global navigation management
+│   │   ├── navigation/
+│   │   │   └── navigation_service.dart   # Global navigation management
+│   │   └── firebase/                     # 🆕 Firebase utilities
+│   │       ├── firebase.dart             # Firebase services index
+│   │       ├── firebase_service.dart     # Core Firebase connection management
+│   │       ├── firebase_config.dart      # Platform-specific configurations
+│   │       ├── firebase_utils.dart       # Connectivity & health check utilities
+│   │       └── README.md                 # Firebase documentation
 │   └── common/
 │       └── showcase_card.dart            # Shared UI components
 └── modules/                               # Feature modules
     ├── auth/                             # Authentication module
+    │   ├── models/
+    │   │   └── widget_category.dart      # Widget category definitions
+    │   └── screens/
+    │       ├── splash_screen.dart        # � Animated splash screen
+    │       └── home_screen.dart          # Main navigation with animated grid
     └── widgets_showcase/                 # Widget catalog module
         ├── screens/
-        │   ├── splash_screen.dart        # 🆕 Animated splash screen with multi-controller animations
-        │   ├── home_screen.dart          # Main navigation with animated grid
         │   └── widget_detail_screen.dart # Category showcase viewer
+        ├── firebase_connectivity_example.dart # 🆕 Firebase utils demo
         └── widgets/                      # All widget category implementations
             ├── animations/               # Animation demonstrations
             │   ├── animated_widgets_showcase.dart
@@ -231,19 +252,19 @@ lib/
             │       ├── custom_switches.dart
             │       ├── range_slider_example.dart
             │       ├── rating_widget.dart
-            │       ├── dropdown_search.dart     # 🆕 Searchable single-select dropdown
-            │       ├── dropdown_search_demo.dart # 🆕 Dropdown search examples
-            │       ├── multiselect_dropdown.dart # 🆕 Advanced multiselect with chips
-            │       ├── multiselect_dropdown_demo.dart # 🆕 Multiselect examples
-            │       ├── image_upload_field.dart  # 🆕 Camera & gallery integration
-            │       ├── image_upload_demo.dart   # 🆕 Image upload examples
-            │       └── date_picker_fields.dart  # 🆕 Multiple date picker types
-            ├── maps_location/            # 🆕 Maps and geolocation
+            │       ├── dropdown_search.dart     # 🔍 Searchable single-select dropdown
+            │       ├── dropdown_search_demo.dart # Demo for dropdown search
+            │       ├── multiselect_dropdown.dart # ✅ Advanced multiselect with chips
+            │       ├── multiselect_dropdown_demo.dart # Demo for multiselect
+            │       ├── image_upload_field.dart  # 📸 Camera & gallery integration
+            │       ├── image_upload_demo.dart   # Demo for image upload
+            │       └── date_picker_fields.dart  # 📅 Multiple date picker types
+            ├── maps_location/            # 🗺️ Maps and geolocation
             │   ├── maps_location_showcase.dart
             │   └── widgets/
-            │       ├── basic_flutter_map.dart   # 🆕 Basic map implementation
-            │       ├── interactive_map.dart     # 🆕 Distance measurement functionality
-            │       └── custom_markers_map.dart  # 🆕 Custom animated markers
+            │       ├── basic_flutter_map.dart   # Basic map implementation
+            │       ├── interactive_map.dart     # Distance measurement functionality
+            │       └── custom_markers_map.dart  # Custom animated markers
             └── custom/                   # Custom showcase implementations
                 └── custom_showcase.dart
 ```
@@ -259,9 +280,10 @@ dependencies:
   shimmer: ^3.0.0                         # Shimmer loading effects
   smooth_page_indicator: ^1.1.0           # Page indicators
   lottie: ^2.7.0                         # Lottie animations
-  image_picker: ^1.0.7                   # 🆕 Camera and gallery access
-  flutter_map: ^6.1.0
-  latlong2: ^0.9.1                   # 🆕 Maps and geolocation functionality
+  image_picker: ^1.0.7                   # 📸 Camera and gallery access
+  flutter_map: ^6.1.0                    # 🗺️ Interactive maps
+  latlong2: ^0.9.1                       # 🗺️ Geographic coordinates
+  firebase_core: ^3.6.0                  # 🔥 Firebase connectivity utilities
 
 dev_dependencies:
   flutter_test: sdk: flutter
