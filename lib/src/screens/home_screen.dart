@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../models/widget_category.dart';
-import '../routes/app_routes.dart';
+import '../../core/models/widget_category.dart';
+import '../../core/routes/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

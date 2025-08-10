@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/src/common/showcase_card.dart';
-import 'package:interesting_flutter/src/loading/widgets/shimmer_example.dart';
-import 'package:interesting_flutter/src/loading/widgets/custom_spinner.dart';
-import 'package:interesting_flutter/src/loading/widgets/progress_indicators_example.dart';
-import 'package:interesting_flutter/src/loading/widgets/pulse_loading.dart';
+import 'package:interesting_flutter/src/widgets_showcase/loading/widgets/shimmer_example.dart';
+import 'package:interesting_flutter/src/widgets_showcase/loading/widgets/custom_spinner.dart';
+import 'package:interesting_flutter/src/widgets_showcase/loading/widgets/progress_indicators_example.dart';
+import 'package:interesting_flutter/src/widgets_showcase/loading/widgets/pulse_loading.dart';
 
 class LoadingWidgetsShowcase extends StatelessWidget {
   const LoadingWidgetsShowcase({super.key});

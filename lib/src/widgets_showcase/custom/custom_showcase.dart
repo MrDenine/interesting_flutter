@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../common/showcase_card.dart';
+import '../../common/showcase_card.dart';
 
 class CustomShowcase extends StatelessWidget {
   const CustomShowcase({super.key});

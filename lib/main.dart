@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'routes/app_routes.dart';
-import 'routes/route_transitions.dart';
-import 'services/navigation_service.dart';
+import 'core/routes/app_routes.dart';
+import 'core/routes/route_transitions.dart';
+import 'core/services/navigation_service.dart';
 
 void main() {
   runApp(const InterestingFlutterApp());

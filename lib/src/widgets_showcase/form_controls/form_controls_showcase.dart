@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:interesting_flutter/src/form_controls/widgets/image_upload_field.dart';
+import 'package:interesting_flutter/src/widgets_showcase/form_controls/widgets/image_upload_field.dart';
 
-import '../common/showcase_card.dart';
+import '../../common/showcase_card.dart';
 import 'widgets/animated_text_fields.dart';
 import 'widgets/custom_switches.dart';
 import 'widgets/date_picker_fields.dart';

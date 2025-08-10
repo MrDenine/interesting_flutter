@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:interesting_flutter/src/animations/widgets/floating_bubbles.dart';
-import 'package:interesting_flutter/src/animations/widgets/loading_dots.dart';
-import 'package:interesting_flutter/src/animations/widgets/morphing_container.dart';
-import 'package:interesting_flutter/src/animations/widgets/pulsing_heart.dart';
+import 'package:interesting_flutter/src/widgets_showcase/animations/widgets/floating_bubbles.dart';
+import 'package:interesting_flutter/src/widgets_showcase/animations/widgets/loading_dots.dart';
+import 'package:interesting_flutter/src/widgets_showcase/animations/widgets/morphing_container.dart';
+import 'package:interesting_flutter/src/widgets_showcase/animations/widgets/pulsing_heart.dart';
 import 'package:interesting_flutter/src/common/showcase_card.dart';
 
 class AnimatedWidgetsShowcase extends StatelessWidget {

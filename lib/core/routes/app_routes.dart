@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../screens/splash_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/widget_detail_screen.dart';
+import '../../src/screens/splash_screen.dart';
+import '../../src/screens/home_screen.dart';
+import '../../src/screens/widget_detail_screen.dart';
 import '../models/widget_category.dart';
 import '../services/navigation_service.dart';
 

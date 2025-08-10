@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/src/common/showcase_card.dart';
-import 'package:interesting_flutter/src/maps_location/widgets/basic_flutter_map.dart';
-import 'package:interesting_flutter/src/maps_location/widgets/interactive_map.dart';
-import 'package:interesting_flutter/src/maps_location/widgets/custom_markers_map.dart';
+import 'package:interesting_flutter/src/widgets_showcase/maps_location/widgets/basic_flutter_map.dart';
+import 'package:interesting_flutter/src/widgets_showcase/maps_location/widgets/interactive_map.dart';
+import 'package:interesting_flutter/src/widgets_showcase/maps_location/widgets/custom_markers_map.dart';
 
 class MapsLocationShowcase extends StatelessWidget {
   const MapsLocationShowcase({super.key});

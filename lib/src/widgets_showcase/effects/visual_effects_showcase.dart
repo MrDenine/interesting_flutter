@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../common/showcase_card.dart';
-import 'widgets/animated_radar.dart';
-import 'widgets/wave_animation.dart';
-import 'widgets/spiral_galaxy.dart';
-import 'widgets/progress_ring.dart';
+import '../../common/showcase_card.dart';
+import 'widgets/gradient_effects.dart';
+import 'widgets/glass_morphism.dart';
+import 'widgets/neumorphism.dart';
+import 'widgets/neon_glow.dart';
 
-class CustomPaintShowcase extends StatelessWidget {
-  const CustomPaintShowcase({super.key});
+class VisualEffectsShowcase extends StatelessWidget {
+  const VisualEffectsShowcase({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,27 +21,27 @@ class CustomPaintShowcase extends StatelessWidget {
         ),
         children: const [
           AnimatedShowcaseCard(
-            title: 'Animated Radar',
-            description: 'Rotating radar sweep with circular grid',
-            child: AnimatedRadar(),
+            title: 'Gradient Effects',
+            description: 'Beautiful gradient animations and effects',
+            child: GradientEffects(),
           ),
           SizedBox(height: 16),
           AnimatedShowcaseCard(
-            title: 'Wave Animation',
-            description: 'Sine wave with smooth animation',
-            child: WaveAnimation(),
+            title: 'Glass Morphism',
+            description: 'Frosted glass effect with blur',
+            child: GlassMorphism(),
           ),
           SizedBox(height: 16),
           AnimatedShowcaseCard(
-            title: 'Spiral Galaxy',
-            description: 'Animated spiral with particles',
-            child: SpiralGalaxy(),
+            title: 'Neumorphism',
+            description: 'Soft UI design with inner/outer shadows',
+            child: Neumorphism(),
           ),
           SizedBox(height: 16),
           AnimatedShowcaseCard(
-            title: 'Progress Ring',
-            description: 'Circular progress indicator with gradient',
-            child: ProgressRing(),
+            title: 'Neon Glow',
+            description: 'Glowing neon effect with animation',
+            child: NeonGlow(),
           ),
         ],
       ),

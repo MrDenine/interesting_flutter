@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/src/common/showcase_card.dart';
-import 'package:interesting_flutter/src/data_display/widgets/animated_chart.dart';
-import 'package:interesting_flutter/src/data_display/widgets/animated_line_chart.dart';
-import 'package:interesting_flutter/src/data_display/widgets/animated_pie_chart.dart';
-import 'package:interesting_flutter/src/data_display/widgets/data_table.dart';
-import 'package:interesting_flutter/src/data_display/widgets/statistics_cards.dart';
+import 'package:interesting_flutter/src/widgets_showcase/data_display/widgets/animated_chart.dart';
+import 'package:interesting_flutter/src/widgets_showcase/data_display/widgets/animated_line_chart.dart';
+import 'package:interesting_flutter/src/widgets_showcase/data_display/widgets/animated_pie_chart.dart';
+import 'package:interesting_flutter/src/widgets_showcase/data_display/widgets/data_table.dart';
+import 'package:interesting_flutter/src/widgets_showcase/data_display/widgets/statistics_cards.dart';
 
 class DataDisplayShowcase extends StatelessWidget {
   const DataDisplayShowcase({super.key});

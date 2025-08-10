@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../common/showcase_card.dart';
+import '../../common/showcase_card.dart';
 import 'widgets/draggable_card.dart';
 import 'widgets/swipe_to_delete.dart';
 import 'widgets/interactive_button.dart';

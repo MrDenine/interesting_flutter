@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../common/showcase_card.dart';
+import '../../common/showcase_card.dart';
 import 'widgets/staggered_grid_example.dart';
 import 'widgets/parallax_scroll_example.dart';
 import 'widgets/expansion_panels_example.dart';
