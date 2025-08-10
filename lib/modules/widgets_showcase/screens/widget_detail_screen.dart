@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/modules/widgets_showcase/widgets/animations/animated_widgets_showcase.dart';
 import 'package:interesting_flutter/modules/widgets_showcase/widgets/custom/custom_showcase.dart';
 import 'package:interesting_flutter/modules/widgets_showcase/widgets/maps_location/maps_location_showcase.dart';
+import 'package:interesting_flutter/modules/widgets_showcase/firebase_connectivity_example.dart';
 
 import '../../auth/models/widget_category.dart';
 import '../widgets/custom_paint/custom_paint_showcase.dart';
@@ -122,6 +123,8 @@ class WidgetDetailScreen extends StatelessWidget {
         return const MapsLocationShowcase();
       case 'custom_showcase':
         return const CustomShowcase();
+      case 'firebase_utils':
+        return const FirebaseConnectivityExample();
       default:
         return const Center(
           child: Text('Coming Soon!'),

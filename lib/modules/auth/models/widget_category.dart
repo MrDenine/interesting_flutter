@@ -87,6 +87,13 @@ class WidgetCategory {
         color: Color(0xFF3F51B5),
         type: 'custom_showcase',
       ),
+      const WidgetCategory(
+        name: 'Firebase Utils',
+        description: 'Firebase connectivity and utilities',
+        icon: Icons.cloud,
+        color: Color(0xFFFF6F00),
+        type: 'firebase_utils',
+      ),
     ];
   }
 }
