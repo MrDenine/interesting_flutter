@@ -117,33 +117,6 @@ flutter pub get
 # Android (recommended for full feature experience)
 flutter run -d android
 
-# iOS
-flutter run -d ios
-
-# Web (some features may be limited)
-flutter run -d chrome
-
-# Windows Desktop
-flutter run -d windows
-
-# Debug with Pixel 9 emulator (if available)
-flutter run -d emulator-5554
-```
-
-### Development Setup
-
-**Recommended Launch Configuration (VS Code):**
-
-```json
-{
-  "name": "interesting_flutter (Pixel 9)",
-  "request": "launch",
-  "type": "dart",
-  "deviceId": "emulator-5554",
-  "args": ["--no-enable-impeller"]
-}
-```
-
 ## 📱 How to Use
 
 ### Navigation
