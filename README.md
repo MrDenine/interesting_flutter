@@ -186,65 +186,66 @@ flutter run -d android
 ```
 lib/
 ├── main.dart                              # Application entry point with splash routing
-├── core/                                  # Core application architecture
+├── shared/                                # Shared application resources
 │   ├── routes/
 │   │   ├── app_routes.dart               # Route definitions with splash navigation
 │   │   └── route_transitions.dart        # Custom page transitions
 │   ├── services/
-│   │   └── navigation_service.dart       # Global navigation management
-│   └── models/
-│       └── widget_category.dart          # Data models and categories
-└── src/                                   # Widget implementations and screens
-    ├── common/
-    │   └── showcase_card.dart            # Shared UI component
-    ├── screens/
-    │   ├── splash_screen.dart            # 🆕 Animated splash screen with multi-controller animations
-    │   ├── home_screen.dart              # Main navigation with animated grid
-    │   └── widget_detail_screen.dart     # Category showcase viewer
-    └── widgets_showcase/                  # All widget category implementations
-        ├── animations/                    # Animation demonstrations
-        │   ├── animated_widgets_showcase.dart
-        │   └── widgets/                  # Individual animation widgets
-        ├── custom_paint/                  # Custom painting examples
-        │   ├── custom_paint_showcase.dart
-        │   └── widgets/                  # Custom paint implementations
-        ├── interactive/                   # Touch and gesture widgets
-        │   ├── interactive_widgets_showcase.dart
-        │   └── widgets/                  # Interactive widget implementations
-        ├── layout/                        # Layout and positioning
-        │   ├── layout_widgets_showcase.dart
-        │   └── widgets/                  # Layout widget implementations
-        ├── loading/                       # Loading states and progress
-        │   ├── loading_widgets_showcase.dart
-        │   └── widgets/                  # Loading widget implementations
-        ├── effects/                       # Visual effects and styling
-        │   ├── visual_effects_showcase.dart
-        │   └── widgets/                  # Visual effect implementations
-        ├── data_display/                  # Charts and data visualization
-        │   ├── data_display_showcase.dart
-        │   └── widgets/                  # Chart and data widgets
-        ├── form_controls/                 # Input controls and forms
-        │   ├── form_controls_showcase.dart
-        │   └── widgets/
-        │       ├── animated_text_fields.dart
-        │       ├── custom_switches.dart
-        │       ├── range_slider_example.dart
-        │       ├── rating_widget.dart
-        │       ├── dropdown_search.dart     # 🆕 Searchable single-select dropdown
-        │       ├── dropdown_search_demo.dart # 🆕 Dropdown search examples
-        │       ├── multiselect_dropdown.dart # 🆕 Advanced multiselect with chips
-        │       ├── multiselect_dropdown_demo.dart # 🆕 Multiselect examples
-        │       ├── image_upload_field.dart  # 🆕 Camera & gallery integration
-        │       ├── image_upload_demo.dart   # 🆕 Image upload examples
-        │       └── date_picker_fields.dart  # 🆕 Multiple date picker types
-        ├── maps_location/                 # 🆕 Maps and geolocation
-        │   ├── maps_location_showcase.dart
-        │   └── widgets/
-        │       ├── basic_flutter_map.dart   # 🆕 Basic map implementation
-        │       ├── interactive_map.dart     # 🆕 Distance measurement functionality
-        │       └── custom_markers_map.dart  # 🆕 Custom animated markers
-        └── custom/                        # Custom showcase implementations
-            └── custom_showcase.dart
+│   │   └── navigation/
+│   │       └── navigation_service.dart   # Global navigation management
+│   └── common/
+│       └── showcase_card.dart            # Shared UI components
+└── modules/                               # Feature modules
+    ├── auth/                             # Authentication module
+    └── widgets_showcase/                 # Widget catalog module
+        ├── screens/
+        │   ├── splash_screen.dart        # 🆕 Animated splash screen with multi-controller animations
+        │   ├── home_screen.dart          # Main navigation with animated grid
+        │   └── widget_detail_screen.dart # Category showcase viewer
+        └── widgets/                      # All widget category implementations
+            ├── animations/               # Animation demonstrations
+            │   ├── animated_widgets_showcase.dart
+            │   └── widgets/             # Individual animation widgets
+            ├── custom_paint/             # Custom painting examples
+            │   ├── custom_paint_showcase.dart
+            │   └── widgets/             # Custom paint implementations
+            ├── interactive/              # Touch and gesture widgets
+            │   ├── interactive_widgets_showcase.dart
+            │   └── widgets/             # Interactive widget implementations
+            ├── layout/                   # Layout and positioning
+            │   ├── layout_widgets_showcase.dart
+            │   └── widgets/             # Layout widget implementations
+            ├── loading/                  # Loading states and progress
+            │   ├── loading_widgets_showcase.dart
+            │   └── widgets/             # Loading widget implementations
+            ├── effects/                  # Visual effects and styling
+            │   ├── visual_effects_showcase.dart
+            │   └── widgets/             # Visual effect implementations
+            ├── data_display/             # Charts and data visualization
+            │   ├── data_display_showcase.dart
+            │   └── widgets/             # Chart and data widgets
+            ├── form_controls/            # Input controls and forms
+            │   ├── form_controls_showcase.dart
+            │   └── widgets/
+            │       ├── animated_text_fields.dart
+            │       ├── custom_switches.dart
+            │       ├── range_slider_example.dart
+            │       ├── rating_widget.dart
+            │       ├── dropdown_search.dart     # 🆕 Searchable single-select dropdown
+            │       ├── dropdown_search_demo.dart # 🆕 Dropdown search examples
+            │       ├── multiselect_dropdown.dart # 🆕 Advanced multiselect with chips
+            │       ├── multiselect_dropdown_demo.dart # 🆕 Multiselect examples
+            │       ├── image_upload_field.dart  # 🆕 Camera & gallery integration
+            │       ├── image_upload_demo.dart   # 🆕 Image upload examples
+            │       └── date_picker_fields.dart  # 🆕 Multiple date picker types
+            ├── maps_location/            # 🆕 Maps and geolocation
+            │   ├── maps_location_showcase.dart
+            │   └── widgets/
+            │       ├── basic_flutter_map.dart   # 🆕 Basic map implementation
+            │       ├── interactive_map.dart     # 🆕 Distance measurement functionality
+            │       └── custom_markers_map.dart  # 🆕 Custom animated markers
+            └── custom/                   # Custom showcase implementations
+                └── custom_showcase.dart
 ```
 
 ## 📦 Dependencies
