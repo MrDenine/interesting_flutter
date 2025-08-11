@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'routes/app_routes.dart';
 import 'routes/route_transitions.dart';
 import 'core/services/navigation/navigation_service.dart';
+import 'core/providers/app_provider.dart';
 
 void main() {
-  runApp(const InterestingFlutterApp());
+  runApp(
+    const ProviderScope(
+      child: InterestingFlutterApp(),
+    ),
+  );
 }
 
-class InterestingFlutterApp extends StatelessWidget {
+class InterestingFlutterApp extends ConsumerWidget {
   const InterestingFlutterApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch theme provider for reactive theme changes
+    final themeMode = ref.watch(themeProvider);
+
     return MaterialApp(
       title: 'Interesting Flutter Widgets',
       debugShowCheckedModeBanner: false,
@@ -28,6 +37,8 @@ class InterestingFlutterApp extends StatelessWidget {
       onUnknownRoute: (settings) => AppRouteGenerator.generateRoute(
         RouteSettings(name: '/error', arguments: settings.arguments),
       ),
+      // Use themeMode from provider
+      themeMode: themeMode,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF6750A4),

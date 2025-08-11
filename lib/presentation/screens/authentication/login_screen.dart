@@ -1,70 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../routes/app_routes.dart';
-import '../../../core/services/authentication/auth_service.dart';
+import 'providers/login_provider.dart';
 import '../../widgets/common/login_button.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _LoginScreenState extends ConsumerState<LoginScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  // TODO: Replace with your preferred authentication service implementation
-  // For now using mock service for demonstration
-  late AuthenticationService _authService;
-
-  bool _isLoading = false;
-
   @override
   void initState() {
     super.initState();
     _setupAnimations();
-    _initializeAuthService();
-  }
-
-  void _initializeAuthService() {
-    // TODO: Replace MockAuthService with your actual implementation
-    // Example: _authService = FirebaseAuthService();
-    _authService = MockAuthService();
-    _authService.addListener(_onAuthStateChanged);
-    _authService.initialize();
-  }
-
-  void _onAuthStateChanged() {
-    if (!mounted) return;
-
-    // Handle authentication state changes
-    switch (_authService.authState) {
-      case AuthState.authenticated:
-        // User successfully authenticated, navigate to home
-        if (_authService.currentUser != null) {
-          AppNavigator.goHome(context);
-        }
-        break;
-      case AuthState.error:
-        // Show error message
-        if (_authService.errorMessage != null) {
-          _showSnackBar(_authService.errorMessage!, isSuccess: false);
-        }
-        break;
-      case AuthState.loading:
-        // Update loading state
-        setState(() => _isLoading = true);
-        break;
-      case AuthState.unauthenticated:
-      case AuthState.initial:
-        // Update loading state
-        setState(() => _isLoading = false);
-        break;
-    }
   }
 
   void _setupAnimations() {
@@ -95,56 +52,30 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void dispose() {
     _animationController.dispose();
-    _authService.removeListener(_onAuthStateChanged);
-    _authService.dispose();
     super.dispose();
   }
 
-  // Handle Google Sign-In using authentication service
+  // Handle Google Sign-In using Riverpod providers
   Future<void> _handleGoogleSignIn() async {
     try {
       // Add haptic feedback
       HapticFeedback.lightImpact();
 
-      // Use authentication service for Google Sign-In
-      final result = await _authService.signInWithGoogle();
-
-      if (result.success && result.user != null) {
-        // Success feedback will be shown via state listener
-        // Navigation will be handled in _onAuthStateChanged
-        _showSnackBar('Google Sign-In successful!', isSuccess: true);
-      } else {
-        // Error will be handled via state listener
-        _showSnackBar(
-          result.errorMessage ?? 'Google Sign-In failed. Please try again.',
-          isSuccess: false,
-        );
-      }
+      // Use Riverpod login provider
+      await ref.read(loginStateProvider.notifier).signInWithGoogle();
     } catch (e) {
       _showSnackBar('An unexpected error occurred.', isSuccess: false);
     }
   }
 
-  // Handle Anonymous Sign-In using authentication service
+  // Handle Anonymous Sign-In using Riverpod providers
   Future<void> _handleAnonymousSignIn() async {
     try {
       // Add haptic feedback
       HapticFeedback.lightImpact();
 
-      // Use authentication service for Anonymous Sign-In
-      final result = await _authService.signInAnonymously();
-
-      if (result.success && result.user != null) {
-        // Success feedback will be shown via state listener
-        // Navigation will be handled in _onAuthStateChanged
-        _showSnackBar('Signed in as guest!', isSuccess: true);
-      } else {
-        // Error will be handled via state listener
-        _showSnackBar(
-          result.errorMessage ?? 'Anonymous sign-in failed. Please try again.',
-          isSuccess: false,
-        );
-      }
+      // Use Riverpod login provider
+      await ref.read(loginStateProvider.notifier).signInAnonymously();
     } catch (e) {
       _showSnackBar('An unexpected error occurred.', isSuccess: false);
     }
@@ -187,6 +118,43 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Watch Riverpod providers for reactive state management
+    final isLoginLoading = ref.watch(isLoginLoadingProvider);
+
+    // Listen for authentication success and navigate
+    ref.listen<bool>(shouldNavigateProvider, (previous, shouldNavigate) {
+      if (shouldNavigate) {
+        ref.read(loginStateProvider.notifier).markNavigated();
+        AppNavigator.goHome(context);
+      }
+    });
+
+    // Listen for login error messages
+    ref.listen<String?>(loginErrorProvider, (previous, errorMessage) {
+      if (errorMessage != null) {
+        _showSnackBar(errorMessage, isSuccess: false);
+        // Clear the error message after showing
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            ref.read(loginStateProvider.notifier).clearMessages();
+          }
+        });
+      }
+    });
+
+    // Listen for login success messages
+    ref.listen<String?>(loginSuccessProvider, (previous, successMessage) {
+      if (successMessage != null) {
+        _showSnackBar(successMessage, isSuccess: true);
+        // Clear the success message after showing
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            ref.read(loginStateProvider.notifier).clearMessages();
+          }
+        });
+      }
+    });
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -288,9 +256,7 @@ class _LoginScreenState extends State<LoginScreen>
                               // Google Sign-In Button
                               LoginButton.google(
                                 onPressed:
-                                    (_isLoading || _authService.isLoading)
-                                        ? null
-                                        : _handleGoogleSignIn,
+                                    isLoginLoading ? null : _handleGoogleSignIn,
                                 context: context,
                               ),
 
@@ -333,16 +299,15 @@ class _LoginScreenState extends State<LoginScreen>
 
                               // Anonymous Sign-In Button
                               LoginButton.anonymous(
-                                onPressed:
-                                    (_isLoading || _authService.isLoading)
-                                        ? null
-                                        : _handleAnonymousSignIn,
+                                onPressed: isLoginLoading
+                                    ? null
+                                    : _handleAnonymousSignIn,
                               ),
 
                               const SizedBox(height: 32),
 
                               // Loading Indicator
-                              if (_isLoading || _authService.isLoading)
+                              if (isLoginLoading)
                                 Container(
                                   padding: const EdgeInsets.all(16),
                                   child: Column(
