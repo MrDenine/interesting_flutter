@@ -97,11 +97,11 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _searchController.dispose();
-    _searchFocusNode.dispose();
-    _dropdownFocusNode.dispose();
-    _closeDropdown();
+    // _animationController.dispose();
+    // _searchController.dispose();
+    // _searchFocusNode.dispose();
+    // _dropdownFocusNode.dispose();
+    // _closeDropdown();
     super.dispose();
   }
 

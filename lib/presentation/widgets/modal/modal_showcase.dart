@@ -15,27 +15,25 @@ class ModalShowcase extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Expanded(
-          child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.9,
-            children: AnimationConfiguration.toStaggeredList(
-              duration: const Duration(milliseconds: 375),
-              childAnimationBuilder: (widget) => SlideAnimation(
-                horizontalOffset: 50.0,
-                child: FadeInAnimation(child: widget),
-              ),
-              children: [
-                AlertDialogDemo(),
-                ConfirmationDialog(),
-                CustomModal(),
-                CustomBottomSheet(),
-                LoadingDialog(),
-                InputDialog(),
-              ],
+        child: GridView.count(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.9,
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 375),
+            childAnimationBuilder: (widget) => SlideAnimation(
+              horizontalOffset: 50.0,
+              child: FadeInAnimation(child: widget),
             ),
+            children: [
+              AlertDialogDemo(),
+              ConfirmationDialog(),
+              CustomModal(),
+              CustomBottomSheet(),
+              LoadingDialog(),
+              InputDialog(),
+            ],
           ),
         ),
       ),

@@ -21,6 +21,7 @@
 /// // Perform health check
 /// final health = await FirebaseUtils.performHealthCheck();
 /// ```
+library;
 
 export 'firebase_service.dart';
 export 'firebase_config.dart';

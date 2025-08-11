@@ -70,7 +70,8 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
     if (!_dropdownFocusNode.hasFocus && !_searchFocusNode.hasFocus && _isOpen) {
       // Close dropdown when both focus nodes lose focus
       Future.delayed(const Duration(milliseconds: 100), () {
-        if (!_dropdownFocusNode.hasFocus &&
+        if (mounted &&
+            !_dropdownFocusNode.hasFocus &&
             !_searchFocusNode.hasFocus &&
             _isOpen) {
           _closeDropdown();
@@ -81,15 +82,28 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
 
   @override
   void dispose() {
+    // Remove overlay immediately before disposing controllers
+    if (_overlayEntry != null) {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    }
+
+    // Remove listeners before disposing
+    _searchController.removeListener(_onSearchChanged);
+    _dropdownFocusNode.removeListener(_onFocusChanged);
+
+    // Dispose controllers
     _animationController.dispose();
     _searchController.dispose();
     _searchFocusNode.dispose();
     _dropdownFocusNode.dispose();
-    _closeDropdown();
+
     super.dispose();
   }
 
   void _onSearchChanged() {
+    if (!mounted) return;
+
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredItems = widget.items.where((item) {
@@ -110,26 +124,37 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
   }
 
   void _openDropdown() {
-    if (!widget.enabled) return;
+    if (!widget.enabled || !mounted) return;
 
     _overlayEntry = _createOverlayEntry();
     Overlay.of(context).insert(_overlayEntry!);
     _animationController.forward();
     _searchFocusNode.requestFocus();
-    setState(() => _isOpen = true);
+    if (mounted) {
+      setState(() => _isOpen = true);
+    }
   }
 
   void _closeDropdown() {
+    if (!mounted) return;
+
     if (_overlayEntry != null) {
       _animationController.reverse().then((_) {
-        _overlayEntry?.remove();
-        _overlayEntry = null;
+        // Double-check if widget is still mounted before removing overlay
+        if (mounted && _overlayEntry != null) {
+          _overlayEntry?.remove();
+          _overlayEntry = null;
+        }
       });
     }
+
     _searchController.clear();
     _filteredItems = widget.items;
     _highlightedIndex = -1;
-    setState(() => _isOpen = false);
+
+    if (mounted) {
+      setState(() => _isOpen = false);
+    }
   }
 
   void _selectItem(T item) {
@@ -138,6 +163,8 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
   }
 
   void _handleKeyPress(KeyEvent event) {
+    if (!mounted) return;
+
     if (event is KeyDownEvent) {
       if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
         setState(() {
@@ -161,7 +188,12 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
   }
 
   OverlayEntry _createOverlayEntry() {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
+    if (renderBox == null || !mounted) {
+      // Return a dummy overlay entry if context is invalid
+      return OverlayEntry(builder: (context) => const SizedBox.shrink());
+    }
+
     final size = renderBox.size;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -189,7 +221,9 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
         behavior: HitTestBehavior.translucent,
         onTap: () {
           // Close dropdown when tapping outside
-          _closeDropdown();
+          if (mounted) {
+            _closeDropdown();
+          }
         },
         child: Stack(
           children: [
@@ -259,9 +293,11 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
                                               ? IconButton(
                                                   icon: const Icon(Icons.clear),
                                                   onPressed: () {
-                                                    _searchController.clear();
-                                                    _searchFocusNode
-                                                        .requestFocus();
+                                                    if (mounted) {
+                                                      _searchController.clear();
+                                                      _searchFocusNode
+                                                          .requestFocus();
+                                                    }
                                                   },
                                                 )
                                               : null,
@@ -312,7 +348,11 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
                                           return Material(
                                             color: Colors.transparent,
                                             child: InkWell(
-                                              onTap: () => _selectItem(item),
+                                              onTap: () {
+                                                if (mounted) {
+                                                  _selectItem(item);
+                                                }
+                                              },
                                               child: Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -393,74 +433,85 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>>
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      focusNode: _dropdownFocusNode,
-      child: CompositedTransformTarget(
-        link: _layerLink,
-        child: GestureDetector(
-          onTap: _toggleDropdown,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: _isOpen
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.outline,
-                width: _isOpen ? 2 : 1,
+    return PopScope(
+      canPop: !_isOpen,
+      onPopInvokedWithResult: (didPop, result) {
+        if (_isOpen && !didPop) {
+          _closeDropdown();
+        }
+      },
+      child: Focus(
+        focusNode: _dropdownFocusNode,
+        child: CompositedTransformTarget(
+          link: _layerLink,
+          child: GestureDetector(
+            onTap: _toggleDropdown,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _isOpen
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.outline,
+                  width: _isOpen ? 2 : 1,
+                ),
+                borderRadius: BorderRadius.circular(8),
+                color: widget.enabled
+                    ? Theme.of(context).colorScheme.surface
+                    : Theme.of(context)
+                        .colorScheme
+                        .surfaceContainerHighest
+                        .withValues(alpha: 0.3),
               ),
-              borderRadius: BorderRadius.circular(8),
-              color: widget.enabled
-                  ? Theme.of(context).colorScheme.surface
-                  : Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest
-                      .withValues(alpha: 0.3),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  widget.label,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: _isOpen
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurfaceVariant,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.label,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: _isOpen
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.value != null
+                              ? widget.displayStringForOption(widget.value as T)
+                              : widget.hint ?? 'Select an option',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: widget.value != null
+                                    ? Theme.of(context).colorScheme.onSurface
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                              ),
+                        ),
                       ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.value != null
-                            ? widget.displayStringForOption(widget.value as T)
-                            : widget.hint ?? 'Select an option',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: widget.value != null
-                                  ? Theme.of(context).colorScheme.onSurface
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                            ),
+                      AnimatedRotation(
+                        turns: _isOpen ? 0.5 : 0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: widget.enabled
+                              ? Theme.of(context).colorScheme.onSurfaceVariant
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.38),
+                        ),
                       ),
-                    ),
-                    AnimatedRotation(
-                      turns: _isOpen ? 0.5 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: widget.enabled
-                            ? Theme.of(context).colorScheme.onSurfaceVariant
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.38),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
