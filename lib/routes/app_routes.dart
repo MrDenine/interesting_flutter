@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../presentation/screens/splash_screen.dart';
+import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/widget_showcase/widget_category_screen.dart';
 import '../presentation/screens/widget_showcase/widget_detail_screen.dart';
@@ -10,6 +11,7 @@ import 'route_transitions.dart';
 /// App route names as constants for type safety
 class AppRoutes {
   static const String splash = '/';
+  static const String login = '/login';
   static const String home = '/home';
   static const String widgetCategory = '/widget-category';
   static const String widgetDetail = '/widget-detail';
@@ -30,6 +32,13 @@ class AppRouteGenerator {
           const SplashScreen(),
           settings: settings,
           transitionType: PageTransitionType.fade,
+        );
+
+      case AppRoutes.login:
+        return _createRoute(
+          const LoginScreen(),
+          settings: settings,
+          transitionType: PageTransitionType.slideFromBottom,
         );
 
       case AppRoutes.home:
@@ -164,6 +173,16 @@ class AppNavigator {
     return Navigator.pushNamed(context, AppRoutes.widgetCategory);
   }
 
+  /// Navigate to login screen
+  static Future<void> goToLogin(BuildContext context) {
+    return Navigator.pushNamed(context, AppRoutes.login);
+  }
+
+  /// Navigate to home screen replacing current route
+  static Future<void> goToHomeReplacement(BuildContext context) {
+    return Navigator.pushReplacementNamed(context, AppRoutes.home);
+  }
+
   /// Replace current route with new route
   static Future<void> pushReplacement(
     BuildContext context,
@@ -183,6 +202,12 @@ class AppNavigator {
   static Future<void> goToWidgetCategoryGlobal() {
     final navigationService = NavigationService.instance;
     return navigationService.navigateTo(AppRoutes.widgetCategory);
+  }
+
+  /// Navigate to login screen globally
+  static Future<void> goToLoginGlobal() {
+    final navigationService = NavigationService.instance;
+    return navigationService.navigateTo(AppRoutes.login);
   }
 
   static Future<void> goToFeatureAndUtilityCategory() {

@@ -125,7 +125,10 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToHome() {
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+    // Navigate to login screen for authentication flow
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
+    // For direct access to home (development only), uncomment below:
+    // Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 
   @override
