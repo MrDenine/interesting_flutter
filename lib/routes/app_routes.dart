@@ -4,6 +4,8 @@ import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/widget_showcase/widget_category_screen.dart';
 import '../presentation/screens/widget_showcase/widget_detail_screen.dart';
+import '../presentation/screens/feature_and_utility_showcase/feature_and_utility_showcase.dart';
+import '../presentation/screens/spacex/spacex_launches_screen.dart';
 import '../data/models/category_model.dart';
 import '../core/services/navigation/navigation_service.dart';
 import 'route_transitions.dart';
@@ -17,6 +19,7 @@ class AppRoutes {
   static const String widgetDetail = '/widget-detail';
   static const String featureAndUtilityCategory =
       '/feature-and-utility-category';
+  static const String spaceXLaunches = '/spacex-launches';
 
   /// Private constructor to prevent instantiation
   AppRoutes._();
@@ -62,6 +65,20 @@ class AppRouteGenerator {
         }
         return _createRoute(
           WidgetDetailScreen(category: category),
+          settings: settings,
+          transitionType: PageTransitionType.slideFromRight,
+        );
+
+      case AppRoutes.featureAndUtilityCategory:
+        return _createRoute(
+          const FeatureAndUtilityShowcase(),
+          settings: settings,
+          transitionType: PageTransitionType.slideFromRight,
+        );
+
+      case AppRoutes.spaceXLaunches:
+        return _createRoute(
+          const SpaceXLaunchesScreen(),
           settings: settings,
           transitionType: PageTransitionType.slideFromRight,
         );

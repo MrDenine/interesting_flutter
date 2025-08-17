@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:interesting_flutter/presentation/widgets/animations/animated_widgets_showcase.dart';
 import 'package:interesting_flutter/presentation/widgets/maps_location/maps_location_showcase.dart';
 import 'package:interesting_flutter/presentation/widgets/modal/modal_showcase.dart';
+import '../spacex/spacex_launches_screen.dart';
 
 import '../../../data/models/category_model.dart';
 import '../../widgets/custom_paint/custom_paint_showcase.dart';
@@ -43,6 +44,8 @@ class WidgetDetailScreen extends StatelessWidget {
         return const MapsLocationShowcase();
       case 'modal':
         return const ModalShowcase();
+      case 'spacex_graphql':
+        return const SpaceXLaunchesScreen();
       default:
         return const Center(
           child: Text('Coming Soon!'),
