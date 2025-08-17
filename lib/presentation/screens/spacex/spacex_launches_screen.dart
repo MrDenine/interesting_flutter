@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interesting_flutter/core/utils/date_utils.dart';
-import 'package:interesting_flutter/presentation/providers/spacex_state.dart';
+import 'package:interesting_flutter/presentation/providers/spacex/spacex_state.dart';
 import 'package:interesting_flutter/presentation/screens/spacex/spacex_launch_details_buttom_sheet.dart';
-import '../../providers/spacex_providers.dart';
+import '../../providers/spacex/spacex_providers.dart';
 import '../../../data/models/spacex/spacex_launch_model.dart';
 
 /// SpaceX Launches Screen
