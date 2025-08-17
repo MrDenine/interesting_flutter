@@ -15,14 +15,6 @@ class HomeScreen extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        actions: [
-          // Logout button for testing authentication flow
-          IconButton(
-            onPressed: () => _showLogoutDialog(context),
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-          ),
-        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -157,56 +149,6 @@ class HomeScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Got it'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Show logout confirmation dialog
-  void _showLogoutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        icon: Icon(
-          Icons.logout,
-          size: 48,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        title: Text(
-          'Logout',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        content: Text(
-          'Are you sure you want to logout? You will be redirected to the login screen.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color:
-                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Navigate back to login screen
-              AppNavigator.goToLogin(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            ),
-            child: const Text('Logout'),
           ),
         ],
       ),
