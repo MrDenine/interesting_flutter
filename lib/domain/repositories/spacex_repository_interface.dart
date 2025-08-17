@@ -1,3 +1,6 @@
+import 'package:interesting_flutter/data/models/spacex/spacex_company_model.dart';
+import 'package:interesting_flutter/data/models/spacex/spacex_rocket_model.dart';
+
 import '../../data/models/spacex/spacex_launch_model.dart';
 
 /// Abstract repository interface for SpaceX data operations

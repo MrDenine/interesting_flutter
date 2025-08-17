@@ -1,3 +1,6 @@
+import 'package:interesting_flutter/data/models/spacex/spacex_company_model.dart';
+import 'package:interesting_flutter/data/models/spacex/spacex_rocket_model.dart';
+
 import '../../domain/repositories/spacex_repository_interface.dart';
 import '../datasources/spacex_datasource_interface.dart';
 import '../models/spacex/spacex_launch_model.dart';

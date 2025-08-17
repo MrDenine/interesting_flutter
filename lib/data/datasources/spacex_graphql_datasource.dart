@@ -1,5 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:interesting_flutter/data/datasources/spacex_graphql_query.dart';
+import 'package:interesting_flutter/data/models/spacex/spacex_company_model.dart';
+import 'package:interesting_flutter/data/models/spacex/spacex_rocket_model.dart';
 import '../models/spacex/spacex_launch_model.dart';
 import '../../core/services/graphql/graphql_config.dart';
 import 'spacex_datasource_interface.dart';

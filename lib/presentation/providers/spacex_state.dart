@@ -1,4 +1,6 @@
+import 'package:interesting_flutter/data/models/spacex/spacex_company_model.dart';
 import 'package:interesting_flutter/data/models/spacex/spacex_launch_model.dart';
+import 'package:interesting_flutter/data/models/spacex/spacex_rocket_model.dart';
 
 class SpaceXDataState {
   final bool isLoading;

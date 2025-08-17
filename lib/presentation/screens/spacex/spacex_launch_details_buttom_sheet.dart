@@ -165,9 +165,9 @@ class LaunchDetailsBottomSheet extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _buildInfoCard([
-                      _buildInfoRow('Name', launch.rocket!.name),
-                      if (launch.rocket!.type != null)
-                        _buildInfoRow('Type', launch.rocket!.type!),
+                      _buildInfoRow('Name', launch.rocket!.rocketName),
+                      if (launch.rocket!.rocketType != null)
+                        _buildInfoRow('Type', launch.rocket!.rocketType!),
                     ]),
                     const SizedBox(height: 16),
                   ],

@@ -121,7 +121,7 @@ class _SpaceXLaunchesScreenState extends ConsumerState<SpaceXLaunchesScreen> {
                         const SizedBox(height: 4),
                         if (launch.rocket != null)
                           Text(
-                            'Rocket: ${launch.rocket!.name}',
+                            'Rocket: ${launch.rocket!.rocketName}',
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 14,
