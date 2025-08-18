@@ -17,6 +17,11 @@ class SpaceXGraphQLDataSource implements SpaceXDataSourceInterface {
       : _client = client ?? GraphQLConfig.createClient(endpoint);
 
   @override
+  void dispose() {
+    // Clean up any resources if needed
+  }
+
+  @override
   Future<List<SpaceXLaunch>> getLaunches({
     int? limit = 20,
     int? offset = 0,
@@ -236,10 +241,5 @@ class SpaceXGraphQLDataSource implements SpaceXDataSourceInterface {
           .map((launch) => SpaceXLaunch.fromJson(launch))
           .toList();
     });
-  }
-
-  @override
-  void dispose() {
-    // Clean up any resources if needed
   }
 }

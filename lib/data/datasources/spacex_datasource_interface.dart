@@ -6,6 +6,9 @@ import '../models/spacex/spacex_launch_model.dart';
 /// Abstract data source interface for SpaceX API operations
 /// This defines the contract for any SpaceX data source implementation (GraphQL, REST, etc.)
 abstract class SpaceXDataSourceInterface {
+  /// Dispose resources
+  void dispose();
+
   /// Fetch all launches with pagination
   Future<List<SpaceXLaunch>> getLaunches({
     int? limit,
@@ -41,7 +44,4 @@ abstract class SpaceXDataSourceInterface {
 
   /// Stream for watching upcoming launches
   Stream<List<SpaceXLaunch>> watchUpcomingLaunches({int? limit});
-
-  /// Dispose resources
-  void dispose();
 }
