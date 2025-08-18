@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/services/authentication/auth_service.dart';
+import '../../../core/services/authentication/auth_service.dart';
 import 'login_state.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {

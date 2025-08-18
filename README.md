@@ -283,4 +283,32 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 🏗️ Clean Architecture Implementation
+
+The project follows proper Clean Architecture principles with clear separation of concerns:
+
+### Architecture Structure
+
+- **Domain Layer**: `lib/domain/repositories/` - Abstract interfaces defining business contracts (no GraphQL dependencies)
+- **Data Layer**:
+  - `lib/data/datasources/` - Concrete GraphQL implementations that implement domain interfaces
+  - `lib/data/repositories/` - Simple delegation layer that coordinates between domain and data sources
+  - `lib/data/models/` - Data transfer objects for API responses
+- **Presentation Layer**:
+  - `lib/presentation/screens/spacex/` - UI that depends only on domain interfaces
+  - `lib/presentation/providers/` - Riverpod providers for dependency injection and state management
+- **Core Layer**: `lib/core/services/graphql/` - Generic GraphQL utilities (framework-agnostic)
+
+### Key Benefits
+
+- ✅ **Repository is an abstraction**, not a concrete implementation
+- ✅ **GraphQL code is isolated** in data sources, not mixed with business logic
+- ✅ **Domain layer is clean** and independent of external frameworks
+- ✅ **Easy to test** by mocking interfaces instead of concrete classes
+- ✅ **Swappable implementations** - can replace GraphQL with REST, local storage, etc.
+
+See [CLEAN_ARCHITECTURE.md](CLEAN_ARCHITECTURE.md) for detailed architectural documentation.
+
+---
+
 **Made with ❤️ using Flutter** | **Author**: [MrDenine](https://github.com/MrDenine) | **Platforms**: Android, iOS, Web, Desktop

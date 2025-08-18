@@ -113,8 +113,8 @@ class HomeScreen extends StatelessWidget {
                                 .withValues(alpha: 0.7),
                           ],
                         ),
-                        isComingSoon: true,
-                        onTap: () => _showComingSoonDialog(context),
+                        onTap: () =>
+                            AppNavigator.goToFeatureAndUtilityCategory(),
                       ),
                       const SizedBox(height: 32),
                     ],
@@ -124,41 +124,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  /// Show coming soon dialog
-  void _showComingSoonDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        icon: Icon(
-          Icons.construction,
-          size: 48,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        title: Text(
-          'Coming Soon',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        content: Text(
-          'Feature and Utility section is under development. Stay tuned for exciting new features!',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color:
-                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Got it'),
-          ),
-        ],
       ),
     );
   }

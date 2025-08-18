@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/services/authentication/auth_provider.dart';
+import '../../../core/services/authentication/auth_provider.dart';
 import 'login_notifier.dart';
 import 'login_state.dart';
 
