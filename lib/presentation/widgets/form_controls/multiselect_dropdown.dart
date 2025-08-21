@@ -1,25 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A customizable multi-select dropdown widget that allows users to select multiple items
+/// from a list with search functionality, validation, and various customization options.
 class MultiselectDropdown<T> extends StatefulWidget {
+  /// The label text displayed above the dropdown field.
+  /// If null, no label will be shown.
   final String? label;
+
+  /// The hint text displayed when no items are selected.
+  /// Defaults to 'Select options' if null.
   final String? hint;
+
+  /// The list of items to display in the dropdown.
+  /// This is required and cannot be empty for the dropdown to function properly.
   final List<T> items;
+
+  /// The list of currently selected items.
+  /// This allows for pre-selecting items when the widget is first displayed.
+  /// Defaults to an empty list.
   final List<T> selectedValues;
+
+  /// A function that converts each item to its string representation for display.
+  /// This is required and determines how items appear in the dropdown and as selected chips.
   final String Function(T) displayStringForOption;
+
+  /// An optional custom widget builder for each dropdown item.
+  /// If provided, this will be used instead of the default text display.
+  /// Useful for showing complex item layouts with icons, subtitles, etc.
   final Widget Function(T)? itemBuilder;
+
+  /// Callback function called when the selection changes.
+  /// Receives the updated list of selected items.
   final ValueChanged<List<T>>? onChanged;
+
+  /// The hint text displayed in the search field.
+  /// Defaults to 'Search...' if null.
   final String? searchHint;
+
+  /// The maximum height of the dropdown overlay in pixels.
+  /// The dropdown will automatically adjust to screen constraints.
+  /// Defaults to 300 pixels.
   final double maxHeight;
+
+  /// Whether the dropdown is enabled for user interaction.
+  /// When false, the dropdown appears disabled and cannot be opened.
+  /// Defaults to true.
   final bool enabled;
+
+  /// The maximum number of items that can be selected.
+  /// If null, there is no limit on selections.
+  /// When the limit is reached, unselected items become disabled.
   final int? maxSelections;
+
+  /// Custom widget builder for displaying selected items.
+  /// Currently not implemented but reserved for future use.
   final Widget Function(List<T>)? selectedItemsBuilder;
+
+  /// Whether to show the "Select All" / "Deselect All" button in the dropdown.
+  /// Defaults to true.
   final bool showSelectAll;
+
+  /// Whether to show a badge with the number of selected items.
+  /// The badge appears in the top-right corner of the dropdown field.
+  /// Defaults to true.
   final bool showNumberOfSelected;
+
+  /// Whether to automatically focus the search field when the dropdown opens.
+  /// Defaults to true for better keyboard navigation.
   final bool focusSearchOnOpen;
+
+  /// Custom padding for the inner content of the dropdown field.
+  /// If null, uses default padding of EdgeInsets.symmetric(horizontal: 12, vertical: 16).
   final EdgeInsetsGeometry? innerPadding;
+
+  /// Whether to show the "Clear" button that removes all selected items.
+  /// Defaults to true. The button only appears when items are selected.
   final bool? showClearSelectedItemButton;
 
+  /// Custom validation function that receives the list of selected items
+  /// and returns an error message string if validation fails, or null if valid.
+  /// This takes priority over built-in validation (minSelections).
+  final String? Function(List<T>)? validator;
+
+  /// Whether to automatically validate the selection when items are added/removed.
+  /// When true, validation occurs immediately on selection changes.
+  /// When false, validation only occurs when validate() is called manually.
+  /// Defaults to false.
+  final bool autoValidate;
+
+  /// The minimum number of items that must be selected for the selection to be valid.
+  /// If specified, built-in validation will ensure at least this many items are selected.
+  /// Works in conjunction with minSelectionsErrorMessage for custom error text.
+  final int? minSelections;
+
+  /// Custom error message to display when minSelections validation fails.
+  /// If null, a default message like "Please select at least X items" will be used.
+  /// Only used when minSelections is specified and no custom validator is provided.
+  final String? minSelectionsErrorMessage;
+
+  /// Creates a MultiselectDropdown widget.
+  ///
+  /// The [items] and [displayStringForOption] parameters are required.
+  /// All other parameters are optional and have sensible defaults.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// MultiselectDropdown<String>(
+  ///   label: 'Select Fruits',
+  ///   items: ['Apple', 'Banana', 'Orange'],
+  ///   displayStringForOption: (item) => item,
+  ///   selectedValues: selectedFruits,
+  ///   onChanged: (values) => setState(() => selectedFruits = values),
+  ///   autoValidate: true,
+  ///   minSelections: 1,
+  ///   maxSelections: 3,
+  /// )
+  /// ```
   const MultiselectDropdown({
     super.key,
     this.label,
@@ -39,6 +136,10 @@ class MultiselectDropdown<T> extends StatefulWidget {
     this.focusSearchOnOpen = true,
     this.innerPadding,
     this.showClearSelectedItemButton = true,
+    this.validator,
+    this.autoValidate = false,
+    this.minSelections,
+    this.minSelectionsErrorMessage,
   });
 
   @override
@@ -59,6 +160,7 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
   List<T> _selectedItems = [];
   bool _isOpen = false;
   int _highlightedIndex = -1;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -80,6 +182,11 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
 
     // Add focus listener to close dropdown when focus is lost
     _dropdownFocusNode.addListener(_onFocusChanged);
+
+    // Initial validation if auto-validation is enabled
+    if (widget.autoValidate) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _validate());
+    }
   }
 
   void _onFocusChanged() {
@@ -100,6 +207,11 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     super.didUpdateWidget(oldWidget);
     if (widget.selectedValues != oldWidget.selectedValues) {
       _selectedItems = List.from(widget.selectedValues);
+
+      // Validate if auto-validation is enabled
+      if (widget.autoValidate) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => _validate());
+      }
     }
   }
 
@@ -162,6 +274,11 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     });
     widget.onChanged?.call(_selectedItems);
     _overlayEntry?.markNeedsBuild();
+
+    // Validate if auto-validation is enabled
+    if (widget.autoValidate) {
+      _validate();
+    }
   }
 
   void _selectAll() {
@@ -183,6 +300,11 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     });
     widget.onChanged?.call(_selectedItems);
     _overlayEntry?.markNeedsBuild();
+
+    // Validate if auto-validation is enabled
+    if (widget.autoValidate) {
+      _validate();
+    }
   }
 
   void _clearSelection() {
@@ -191,6 +313,60 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     });
     widget.onChanged?.call(_selectedItems);
     _overlayEntry?.markNeedsBuild();
+
+    // Validate if auto-validation is enabled
+    if (widget.autoValidate) {
+      _validate();
+    }
+  }
+
+  String? _validate() {
+    if (widget.validator != null) {
+      final error = widget.validator!(_selectedItems);
+      setState(() {
+        _errorMessage = error;
+      });
+      return error;
+    }
+
+    // Built-in validation for minimum selections
+    if (widget.minSelections != null &&
+        _selectedItems.length < widget.minSelections!) {
+      final error = widget.minSelectionsErrorMessage ??
+          'Please select at least ${widget.minSelections} item${widget.minSelections! > 1 ? 's' : ''}';
+      setState(() {
+        _errorMessage = error;
+      });
+      return error;
+    }
+
+    setState(() {
+      _errorMessage = null;
+    });
+    return null;
+  }
+
+  /// Manually triggers validation of the current selection.
+  ///
+  /// Returns the validation error message if validation fails,
+  /// or null if the current selection is valid.
+  ///
+  /// This method can be called from outside the widget to validate
+  /// the selection state, useful for form validation scenarios.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dropdownKey = GlobalKey<State<MultiselectDropdown<String>>>();
+  ///
+  /// // Later in your code:
+  /// final error = (dropdownKey.currentState as dynamic)?.validate();
+  /// if (error != null) {
+  ///   // Handle validation error
+  ///   print('Validation failed: $error');
+  /// }
+  /// ```
+  String? validate() {
+    return _validate();
   }
 
   void _handleKeyPress(KeyEvent event) {
@@ -540,64 +716,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
       );
     }
 
-    // if (_selectedItems.length == 1) {
-    //   return Text(
-    //     widget.displayStringForOption(_selectedItems.first),
-    //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-    //           color: Theme.of(context).colorScheme.onSurface,
-    //         ),
-    //   );
-    // }
-
-    // if (_selectedItems.length <= 3) {
-    //   return Wrap(
-    //     spacing: 4,
-    //     runSpacing: 4,
-    //     children: _selectedItems
-    //         .map((item) => Chip(
-    //               label: Text(
-    //                 widget.displayStringForOption(item),
-    //                 style: const TextStyle(fontSize: 12),
-    //               ),
-    //               deleteIcon: const Icon(Icons.close, size: 14),
-    //               onDeleted: () => _toggleItemSelection(item),
-    //               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    //               visualDensity: VisualDensity.compact,
-    //             ))
-    //         .toList(),
-    //   );
-    // }
-
-    // return Row(
-    //   children: [
-    //     Chip(
-    //       label: Text(
-    //         widget.displayStringForOption(_selectedItems.first),
-    //         style: const TextStyle(fontSize: 12),
-    //       ),
-    //       deleteIcon: const Icon(Icons.close, size: 14),
-    //       onDeleted: () => _toggleItemSelection(_selectedItems.first),
-    //       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    //       visualDensity: VisualDensity.compact,
-    //     ),
-    //     const SizedBox(width: 4),
-    //     Container(
-    //       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-    //       decoration: BoxDecoration(
-    //         color: Theme.of(context).colorScheme.primaryContainer,
-    //         borderRadius: BorderRadius.circular(12),
-    //       ),
-    //       child: Text(
-    //         '+${_selectedItems.length - 1} more',
-    //         style: TextStyle(
-    //           fontSize: 12,
-    //           color: Theme.of(context).colorScheme.onPrimaryContainer,
-    //         ),
-    //       ),
-    //     ),
-    //   ],
-    // );
-
     return Wrap(
       spacing: 4,
       runSpacing: 4,
@@ -635,91 +753,116 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
       focusNode: _dropdownFocusNode,
       child: CompositedTransformTarget(
         link: _layerLink,
-        child: GestureDetector(
-          onTap: _toggleDropdown,
-          child: Container(
-            padding: widget.innerPadding ??
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: _isOpen
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.outline,
-                width: _isOpen ? 2 : 1,
-              ),
-              borderRadius: BorderRadius.circular(8),
-              color: widget.enabled
-                  ? Theme.of(context).colorScheme.surface
-                  : Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest
-                      .withValues(alpha: 0.3),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: _toggleDropdown,
+              child: Container(
+                padding: widget.innerPadding ??
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: _errorMessage != null
+                        ? Theme.of(context).colorScheme.error
+                        : _isOpen
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.outline,
+                    width: _isOpen || _errorMessage != null ? 2 : 1,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  color: widget.enabled
+                      ? Theme.of(context).colorScheme.surface
+                      : Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.3),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (widget.label != null) ...[
-                      Expanded(
-                        child: Text(
-                          widget.label ?? "",
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: _isOpen
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
+                    Row(
+                      children: [
+                        if (widget.label != null) ...[
+                          Expanded(
+                            child: Text(
+                              widget.label ?? "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(
+                                    color: _errorMessage != null
+                                        ? Theme.of(context).colorScheme.error
+                                        : _isOpen
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onSurfaceVariant,
                                   ),
+                            ),
+                          ),
+                        ],
+                        if (_selectedItems.isNotEmpty &&
+                            widget.showNumberOfSelected)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '${_selectedItems.length}',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildSelectedItemsDisplay(),
                         ),
-                      ),
-                    ],
-                    if (_selectedItems.isNotEmpty &&
-                        widget.showNumberOfSelected)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          '${_selectedItems.length}',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
+                        // Arrow icon
+                        AnimatedRotation(
+                          turns: _isOpen ? 0.5 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: widget.enabled
+                                ? Theme.of(context).colorScheme.onSurfaceVariant
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withValues(alpha: 0.38),
                           ),
                         ),
-                      ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildSelectedItemsDisplay(),
-                    ),
-                    // Arrow icon
-                    AnimatedRotation(
-                      turns: _isOpen ? 0.5 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: widget.enabled
-                            ? Theme.of(context).colorScheme.onSurfaceVariant
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.38),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
+            // Error message
+            if (_errorMessage != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 4, top: 4),
+                child: Text(
+                  _errorMessage!,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                ),
+              ),
+          ],
         ),
       ),
     );

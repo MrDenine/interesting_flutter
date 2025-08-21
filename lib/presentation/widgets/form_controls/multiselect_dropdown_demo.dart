@@ -41,6 +41,9 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
     )
   ];
 
+  final GlobalKey<State<MultiselectDropdown<String>>> _customSkillsDropdownKey =
+      GlobalKey();
+
   static const List<Country> countries = [
     Country('United States', 'US', '🇺🇸'),
     Country('Canada', 'CA', '🇨🇦'),
@@ -208,6 +211,7 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
 
         // Customs dropdown
         MultiselectDropdown<SkillEntity>(
+          key: _customSkillsDropdownKey,
           hint: 'Select items',
           items: customSkill,
           selectedValues: selectedCustomSkills,
@@ -215,10 +219,13 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
           searchHint: 'Search skills...',
           focusSearchOnOpen: false,
           showSelectAll: false,
-          maxSelections: 5,
+          autoValidate: true,
+          minSelections: 1,
+          maxSelections: 4,
           showNumberOfSelected: false,
           innerPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           showClearSelectedItemButton: false,
+          minSelectionsErrorMessage: "You must pick at least 1 items.",
           onChanged: (selected) {
             setState(() {
               selectedCustomSkills = selected;
@@ -226,12 +233,11 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
           },
         ),
 
-        const SizedBox(height: 16),
-
         // Summary
         if (selectedCountries.isNotEmpty ||
             selectedSkills.isNotEmpty ||
-            selectedCustomSkills.isNotEmpty)
+            selectedCustomSkills.isNotEmpty) ...[
+          const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -277,8 +283,7 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
               ],
             ),
           ),
-
-        const SizedBox(height: 16),
+        ]
       ],
     );
   }
