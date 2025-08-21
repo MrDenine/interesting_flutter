@@ -59,6 +59,7 @@ dependencies:
   graphql_flutter: ^5.2.0
   flutter_riverpod: ^2.6.1
   logger: ^2.6.0
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

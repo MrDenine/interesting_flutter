@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:interesting_flutter/domain/entity/skill_entity.dart';
+
 import 'multiselect_dropdown.dart';
 
 class MultiselectDropdownDemo extends StatefulWidget {
@@ -29,6 +31,18 @@ class Country {
 class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
   List<Country> selectedCountries = [];
   List<String> selectedSkills = [];
+  List<SkillEntity> selectedCustomSkills = [
+    SkillEntity(
+      skillCode: 'flutter_dev',
+      skillType: 'Mobile Development',
+      skillLevel: 3,
+      name: 'Flutter Developer',
+      description: 'Expert in building mobile applications using Flutter.',
+    )
+  ];
+
+  final GlobalKey<State<MultiselectDropdown<String>>> _customSkillsDropdownKey =
+      GlobalKey();
 
   static const List<Country> countries = [
     Country('United States', 'US', '🇺🇸'),
@@ -69,6 +83,73 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
     'Project Management',
     'Agile Methodology',
     'Version Control (Git)',
+  ];
+
+  List<SkillEntity> customSkill = [
+    SkillEntity(
+      skillCode: 'flutter_dev',
+      skillType: 'Mobile Development',
+      skillLevel: 3,
+      name: 'Flutter Developer',
+      description: 'Expert in building mobile applications using Flutter.',
+    ),
+    SkillEntity(
+      skillCode: 'web_dev',
+      skillType: 'Web Development',
+      skillLevel: 4,
+      name: 'Web Developer',
+      description: 'Experienced in building responsive web applications.',
+    ),
+    SkillEntity(
+      skillCode: 'data_sci',
+      skillType: 'Data Science',
+      skillLevel: 5,
+      name: 'Data Scientist',
+      description: 'Skilled in data analysis and machine learning.',
+    ),
+    SkillEntity(
+      skillCode: 'ui_ux',
+      skillType: 'UI/UX Design',
+      skillLevel: 2,
+      name: 'UI/UX Designer',
+      description: 'Proficient in creating user-friendly interfaces.',
+    ),
+    SkillEntity(
+      skillCode: 'backend_dev',
+      skillType: 'Backend Development',
+      skillLevel: 4,
+      name: 'Backend Developer',
+      description: 'Experienced in server-side development and API design.',
+    ),
+    SkillEntity(
+      skillCode: 'devops_eng',
+      skillType: 'DevOps',
+      skillLevel: 3,
+      name: 'DevOps Engineer',
+      description: 'Skilled in CI/CD pipelines and cloud infrastructure.',
+    ),
+    SkillEntity(
+      skillCode: 'ml_eng',
+      skillType: 'Machine Learning',
+      skillLevel: 5,
+      name: 'ML Engineer',
+      description:
+          'Expert in machine learning algorithms and model deployment.',
+    ),
+    SkillEntity(
+      skillCode: 'sys_arch',
+      skillType: 'System Architecture',
+      skillLevel: 4,
+      name: 'System Architect',
+      description: 'Experienced in designing scalable system architectures.',
+    ),
+    SkillEntity(
+      skillCode: 'db_admin',
+      skillType: 'Database Design',
+      skillLevel: 3,
+      name: 'Database Administrator',
+      description: 'Proficient in database design and optimization.',
+    ),
   ];
 
   @override
@@ -118,7 +199,6 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
           selectedValues: selectedSkills,
           displayStringForOption: (skill) => skill,
           searchHint: 'Search skills...',
-          // No maxHeight specified - will use dynamic sizing
           maxSelections: 5,
           onChanged: (selected) {
             setState(() {
@@ -129,8 +209,35 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
 
         const SizedBox(height: 16),
 
+        // Customs dropdown
+        MultiselectDropdown<SkillEntity>(
+          key: _customSkillsDropdownKey,
+          hint: 'Select items',
+          items: customSkill,
+          selectedValues: selectedCustomSkills,
+          displayStringForOption: (skill) => skill.name,
+          searchHint: 'Search skills...',
+          focusSearchOnOpen: false,
+          showSelectAll: false,
+          autoValidate: true,
+          minSelections: 1,
+          maxSelections: 4,
+          showNumberOfSelected: false,
+          innerPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          showClearSelectedItemButton: false,
+          minSelectionsErrorMessage: "You must pick at least 1 items.",
+          onChanged: (selected) {
+            setState(() {
+              selectedCustomSkills = selected;
+            });
+          },
+        ),
+
         // Summary
-        if (selectedCountries.isNotEmpty || selectedSkills.isNotEmpty)
+        if (selectedCountries.isNotEmpty ||
+            selectedSkills.isNotEmpty ||
+            selectedCustomSkills.isNotEmpty) ...[
+          const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -167,9 +274,16 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
                     'Skills: ${selectedSkills.join(', ')}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
+                if (selectedCustomSkills.isNotEmpty) ...[
+                  Text(
+                    'Custom Skills: ${selectedCustomSkills.map((c) => c.name).join(', ')}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ]
               ],
             ),
           ),
+        ]
       ],
     );
   }
