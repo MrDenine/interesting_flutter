@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MultiselectDropdown<T> extends StatefulWidget {
-  final String label;
+  final String? label;
   final String? hint;
   final List<T> items;
   final List<T> selectedValues;
@@ -15,10 +15,14 @@ class MultiselectDropdown<T> extends StatefulWidget {
   final int? maxSelections;
   final Widget Function(List<T>)? selectedItemsBuilder;
   final bool showSelectAll;
+  final bool showNumberOfSelected;
+  final bool focusSearchOnOpen;
+  final EdgeInsetsGeometry? innerPadding;
+  final bool? showClearSelectedItemButton;
 
   const MultiselectDropdown({
     super.key,
-    required this.label,
+    this.label,
     required this.items,
     required this.displayStringForOption,
     this.hint,
@@ -31,6 +35,10 @@ class MultiselectDropdown<T> extends StatefulWidget {
     this.maxSelections,
     this.selectedItemsBuilder,
     this.showSelectAll = true,
+    this.showNumberOfSelected = true,
+    this.focusSearchOnOpen = true,
+    this.innerPadding,
+    this.showClearSelectedItemButton = true,
   });
 
   @override
@@ -95,16 +103,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     }
   }
 
-  @override
-  void dispose() {
-    // _animationController.dispose();
-    // _searchController.dispose();
-    // _searchFocusNode.dispose();
-    // _dropdownFocusNode.dispose();
-    // _closeDropdown();
-    super.dispose();
-  }
-
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase();
     setState(() {
@@ -131,7 +129,10 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     _overlayEntry = _createOverlayEntry();
     Overlay.of(context).insert(_overlayEntry!);
     _animationController.forward();
-    _searchFocusNode.requestFocus();
+    //Todo: focus
+    if (widget.focusSearchOnOpen) {
+      _searchFocusNode.requestFocus();
+    }
     setState(() => _isOpen = true);
   }
 
@@ -371,7 +372,9 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
                                               ),
                                             ),
                                           const Spacer(),
-                                          if (_selectedItems.isNotEmpty)
+                                          if (_selectedItems.isNotEmpty &&
+                                              (widget.showClearSelectedItemButton ??
+                                                  true))
                                             TextButton.icon(
                                               onPressed: _clearSelection,
                                               icon: const Icon(Icons.clear_all,
@@ -524,9 +527,9 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
   }
 
   Widget _buildSelectedItemsDisplay() {
-    if (widget.selectedItemsBuilder != null) {
-      return widget.selectedItemsBuilder!(_selectedItems);
-    }
+    // if (widget.selectedItemsBuilder != null) {
+    //   return widget.selectedItemsBuilder!(_selectedItems);
+    // }
 
     if (_selectedItems.isEmpty) {
       return Text(
@@ -537,62 +540,92 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
       );
     }
 
-    if (_selectedItems.length == 1) {
-      return Text(
-        widget.displayStringForOption(_selectedItems.first),
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-      );
-    }
+    // if (_selectedItems.length == 1) {
+    //   return Text(
+    //     widget.displayStringForOption(_selectedItems.first),
+    //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+    //           color: Theme.of(context).colorScheme.onSurface,
+    //         ),
+    //   );
+    // }
 
-    if (_selectedItems.length <= 3) {
-      return Wrap(
-        spacing: 4,
-        runSpacing: 4,
-        children: _selectedItems
-            .map((item) => Chip(
-                  label: Text(
-                    widget.displayStringForOption(item),
-                    style: const TextStyle(fontSize: 12),
+    // if (_selectedItems.length <= 3) {
+    //   return Wrap(
+    //     spacing: 4,
+    //     runSpacing: 4,
+    //     children: _selectedItems
+    //         .map((item) => Chip(
+    //               label: Text(
+    //                 widget.displayStringForOption(item),
+    //                 style: const TextStyle(fontSize: 12),
+    //               ),
+    //               deleteIcon: const Icon(Icons.close, size: 14),
+    //               onDeleted: () => _toggleItemSelection(item),
+    //               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    //               visualDensity: VisualDensity.compact,
+    //             ))
+    //         .toList(),
+    //   );
+    // }
+
+    // return Row(
+    //   children: [
+    //     Chip(
+    //       label: Text(
+    //         widget.displayStringForOption(_selectedItems.first),
+    //         style: const TextStyle(fontSize: 12),
+    //       ),
+    //       deleteIcon: const Icon(Icons.close, size: 14),
+    //       onDeleted: () => _toggleItemSelection(_selectedItems.first),
+    //       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    //       visualDensity: VisualDensity.compact,
+    //     ),
+    //     const SizedBox(width: 4),
+    //     Container(
+    //       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    //       decoration: BoxDecoration(
+    //         color: Theme.of(context).colorScheme.primaryContainer,
+    //         borderRadius: BorderRadius.circular(12),
+    //       ),
+    //       child: Text(
+    //         '+${_selectedItems.length - 1} more',
+    //         style: TextStyle(
+    //           fontSize: 12,
+    //           color: Theme.of(context).colorScheme.onPrimaryContainer,
+    //         ),
+    //       ),
+    //     ),
+    //   ],
+    // );
+
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      children: _selectedItems
+          .map((item) => Chip(
+                labelPadding: const EdgeInsets.all(0),
+                padding: const EdgeInsets.only(
+                    left: 12, top: 0, right: 4, bottom: 0),
+                label: Text(
+                  widget.displayStringForOption(item),
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                onDeleted: () => _toggleItemSelection(item),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)),
+                deleteIcon: Container(
+                  height: 20,
+                  width: 20,
+                  padding: EdgeInsets.all(2),
+                  child: Icon(
+                    Icons.close,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  deleteIcon: const Icon(Icons.close, size: 14),
-                  onDeleted: () => _toggleItemSelection(item),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                ))
-            .toList(),
-      );
-    }
-
-    return Row(
-      children: [
-        Chip(
-          label: Text(
-            widget.displayStringForOption(_selectedItems.first),
-            style: const TextStyle(fontSize: 12),
-          ),
-          deleteIcon: const Icon(Icons.close, size: 14),
-          onDeleted: () => _toggleItemSelection(_selectedItems.first),
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-        ),
-        const SizedBox(width: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            '+${_selectedItems.length - 1} more',
-            style: TextStyle(
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-          ),
-        ),
-      ],
+                ),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ))
+          .toList(),
     );
   }
 
@@ -605,7 +638,8 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
         child: GestureDetector(
           onTap: _toggleDropdown,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            padding: widget.innerPadding ??
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             decoration: BoxDecoration(
               border: Border.all(
                 color: _isOpen
@@ -627,20 +661,23 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      child: Text(
-                        widget.label,
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: _isOpen
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
-                                ),
+                    if (widget.label != null) ...[
+                      Expanded(
+                        child: Text(
+                          widget.label ?? "",
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    color: _isOpen
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                  ),
+                        ),
                       ),
-                    ),
-                    if (_selectedItems.isNotEmpty)
+                    ],
+                    if (_selectedItems.isNotEmpty &&
+                        widget.showNumberOfSelected)
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
@@ -659,12 +696,12 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
                       ),
                   ],
                 ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
                       child: _buildSelectedItemsDisplay(),
                     ),
+                    // Arrow icon
                     AnimatedRotation(
                       turns: _isOpen ? 0.5 : 0,
                       duration: const Duration(milliseconds: 200),
