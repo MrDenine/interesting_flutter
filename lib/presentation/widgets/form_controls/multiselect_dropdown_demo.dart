@@ -29,6 +29,8 @@ class Country {
 }
 
 class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   List<Country> selectedCountries = [];
   List<String> selectedSkills = [];
   List<SkillEntity> selectedCustomSkills = [
@@ -40,9 +42,6 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
       description: 'Expert in building mobile applications using Flutter.',
     )
   ];
-
-  final GlobalKey<State<MultiselectDropdown<String>>> _customSkillsDropdownKey =
-      GlobalKey();
 
   static const List<Country> countries = [
     Country('United States', 'US', '🇺🇸'),
@@ -152,139 +151,243 @@ class _MultiselectDropdownDemoState extends State<MultiselectDropdownDemo> {
     ),
   ];
 
+  void _handleSubmit() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState?.save();
+
+      // Show results
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Form Submitted Successfully'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (selectedCountries.isNotEmpty)
+                Text(
+                    'Countries: ${selectedCountries.map((c) => c.name).join(', ')}'),
+              if (selectedSkills.isNotEmpty)
+                Text('Skills: ${selectedSkills.join(', ')}'),
+              if (selectedCustomSkills.isNotEmpty)
+                Text(
+                    'Custom Skills: ${selectedCustomSkills.map((c) => c.name).join(', ')}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void _resetForm() {
+    _formKey.currentState?.reset();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Countries dropdown
-        MultiselectDropdown<Country>(
-          label: 'Countries',
-          hint: 'Select countries you want to visit',
-          items: countries.take(15).toList(), // More items to showcase height
-          selectedValues: selectedCountries,
-          displayStringForOption: (country) => country.name,
-          searchHint: 'Search countries...',
-          // No maxHeight specified - will use dynamic sizing
-          onChanged: (selected) {
-            setState(() {
-              selectedCountries = selected;
-            });
-          },
-          itemBuilder: (country) => Row(
-            children: [
-              Text(
-                country.flag,
-                style: const TextStyle(fontSize: 18),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  country.name,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Example 1: Regular MultiselectDropdown (for comparison)
+          Text(
+            'Regular MultiselectDropdown:',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 8),
+          MultiselectDropdown<Country>(
+            label: 'Countries (Regular)',
+            hint: 'Select countries you want to visit',
+            items: countries.take(15).toList(),
+            selectedValues: selectedCountries,
+            displayStringForOption: (country) => country.name,
+            searchHint: 'Search countries...',
+            onChanged: (selected) {
+              setState(() {
+                selectedCountries = selected;
+              });
+            },
+            itemBuilder: (country) => Row(
+              children: [
+                Text(
+                  country.flag,
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    country.name,
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Example 2: MultiselectDropdownFormField with validation
+          Text(
+            'MultiselectDropdownFormField Examples:',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 16),
+
+          // Skills dropdown with form field
+          MultiselectDropdownFormField<String>(
+            label: 'Skills (Required)',
+            hint: 'Select your technical skills',
+            items: skills,
+            displayStringForOption: (skill) => skill,
+            searchHint: 'Search skills...',
+            maxSelections: 5,
+            minSelections: 2,
+            minSelectionsErrorMessage: 'Please select at least 2 skills',
+            initialValue: selectedSkills,
+            validator: (values) {
+              if (values == null || values.length < 2) {
+                return 'At least 2 skills are required';
+              }
+              if (values.length > 5) {
+                return 'Maximum 5 skills allowed';
+              }
+              return null;
+            },
+            onSaved: (values) => selectedSkills = values ?? [],
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Custom skills dropdown with form field
+          MultiselectDropdownFormField<SkillEntity>(
+            label: 'Specialized Skills (Required)',
+            hint: 'Select specialized skills',
+            items: customSkill,
+            displayStringForOption: (skill) => skill.name,
+            searchHint: 'Search specialized skills...',
+            focusSearchOnOpen: false,
+            showSelectAll: false,
+            minSelections: 1,
+            maxSelections: 4,
+            showNumberOfSelected: false,
+            innerPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            showClearSelectedItemButton: false,
+            initialValue: selectedCustomSkills,
+            validator: (values) {
+              if (values == null || values.isEmpty) {
+                return 'Please select at least one specialized skill';
+              }
+              return null;
+            },
+            onSaved: (values) => selectedCustomSkills = values ?? [],
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
+            itemBuilder: (skill) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  skill.name,
                   style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  skill.skillType,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Form action buttons
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _handleSubmit,
+                  child: const Text('Submit Form'),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: _resetForm,
+                  child: const Text('Reset Form'),
                 ),
               ),
             ],
           ),
-        ),
 
-        const SizedBox(height: 16),
-
-        // Programming languages dropdown
-        MultiselectDropdown<String>(
-          label: 'Skills',
-          hint: 'Select your skills',
-          items: skills, // Show all skills
-          selectedValues: selectedSkills,
-          displayStringForOption: (skill) => skill,
-          searchHint: 'Search skills...',
-          maxSelections: 5,
-          onChanged: (selected) {
-            setState(() {
-              selectedSkills = selected;
-            });
-          },
-        ),
-
-        const SizedBox(height: 16),
-
-        // Customs dropdown
-        MultiselectDropdown<SkillEntity>(
-          key: _customSkillsDropdownKey,
-          hint: 'Select items',
-          items: customSkill,
-          selectedValues: selectedCustomSkills,
-          displayStringForOption: (skill) => skill.name,
-          searchHint: 'Search skills...',
-          focusSearchOnOpen: false,
-          showSelectAll: false,
-          autoValidate: true,
-          minSelections: 1,
-          maxSelections: 4,
-          showNumberOfSelected: false,
-          innerPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          showClearSelectedItemButton: false,
-          minSelectionsErrorMessage: "You must pick at least 1 items.",
-          onChanged: (selected) {
-            setState(() {
-              selectedCustomSkills = selected;
-            });
-          },
-        ),
-
-        // Summary
-        if (selectedCountries.isNotEmpty ||
-            selectedSkills.isNotEmpty ||
-            selectedCustomSkills.isNotEmpty) ...[
           const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Theme.of(context)
-                  .colorScheme
-                  .primaryContainer
-                  .withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
+
+          // Summary
+          if (selectedCountries.isNotEmpty ||
+              selectedSkills.isNotEmpty ||
+              selectedCustomSkills.isNotEmpty) ...[
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
                 color: Theme.of(context)
                     .colorScheme
-                    .primary
-                    .withValues(alpha: 0.3),
+                    .primaryContainer
+                    .withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Current Selection Summary',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  if (selectedCountries.isNotEmpty)
+                    Text(
+                      'Countries: ${selectedCountries.map((c) => c.name).join(', ')}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  if (selectedSkills.isNotEmpty)
+                    Text(
+                      'Skills: ${selectedSkills.join(', ')}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  if (selectedCustomSkills.isNotEmpty) ...[
+                    Text(
+                      'Specialized Skills: ${selectedCustomSkills.map((c) => c.name).join(', ')}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ]
+                ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Selection Summary',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                if (selectedCountries.isNotEmpty)
-                  Text(
-                    'Countries: ${selectedCountries.map((c) => c.name).join(', ')}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                if (selectedSkills.isNotEmpty)
-                  Text(
-                    'Skills: ${selectedSkills.join(', ')}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                if (selectedCustomSkills.isNotEmpty) ...[
-                  Text(
-                    'Custom Skills: ${selectedCustomSkills.map((c) => c.name).join(', ')}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ]
-              ],
-            ),
-          ),
-        ]
-      ],
+          ]
+        ],
+      ),
     );
   }
 }

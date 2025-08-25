@@ -29,4 +29,24 @@ class SkillEntity {
       description: description ?? this.description,
     );
   }
+
+  @override
+  String toString() {
+    return 'SkillEntity{skillCode: $skillCode, skillType: $skillType, skillLevel: $skillLevel, name: $name, description: $description}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is SkillEntity &&
+        other.skillCode == skillCode &&
+        other.skillType == skillType &&
+        other.skillLevel == skillLevel;
+  }
+
+  @override
+  int get hashCode {
+    return skillCode.hashCode ^ skillType.hashCode ^ skillLevel.hashCode;
+  }
 }

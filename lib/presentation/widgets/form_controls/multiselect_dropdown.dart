@@ -1,5 +1,232 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+/// A FormField wrapper for MultiselectDropdown that integrates properly with Flutter forms.
+/// This widget handles form validation, state management, and provides proper integration
+/// with Form widgets for saving and resetting values.
+class MultiselectDropdownFormField<T> extends FormField<List<T>> {
+  /// The label text displayed above the dropdown field.
+  final String? label;
+
+  /// The hint text displayed when no items are selected.
+  final String? hint;
+
+  /// The list of items to display in the dropdown.
+  final List<T> items;
+
+  /// A function that converts each item to its string representation for display.
+  final String Function(T) displayStringForOption;
+
+  /// An optional custom widget builder for each dropdown item.
+  final Widget Function(T)? itemBuilder;
+
+  /// The hint text displayed in the search field.
+  final String? searchHint;
+
+  /// The maximum height of the dropdown overlay in pixels.
+  final double maxHeight;
+
+  /// Whether the dropdown is enabled for user interaction.
+  @override
+  final bool enabled;
+
+  /// The maximum number of items that can be selected.
+  final int? maxSelections;
+
+  /// Whether to show the "Select All" / "Deselect All" button in the dropdown.
+  final bool showSelectAll;
+
+  /// Whether to show a badge with the number of selected items.
+  final bool showNumberOfSelected;
+
+  /// Whether to automatically focus the search field when the dropdown opens.
+  final bool focusSearchOnOpen;
+
+  /// Custom padding for the inner content of the dropdown field.
+  final EdgeInsetsGeometry? innerPadding;
+
+  /// Whether to show the "Clear" button that removes all selected items.
+  final bool? showClearSelectedItemButton;
+
+  /// The minimum number of items that must be selected for the selection to be valid.
+  final int? minSelections;
+
+  /// Custom error message to display when minSelections validation fails.
+  final String? minSelectionsErrorMessage;
+
+  /// Custom decoration for the form field. If null, default decoration will be used.
+  final InputDecoration? decoration;
+
+  /// Whether to automatically validate the selection when items are added/removed.
+  final bool autoValidate;
+
+  /// Creates a MultiselectDropdownFormField widget.
+  ///
+  /// The [items] and [displayStringForOption] parameters are required.
+  /// This form field properly integrates with Flutter forms and handles validation,
+  /// saving, and resetting of values.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// MultiselectDropdownFormField<String>(
+  ///   label: 'Select Fruits',
+  ///   items: ['Apple', 'Banana', 'Orange'],
+  ///   displayStringForOption: (item) => item,
+  ///   initialValue: ['Apple'],
+  ///   validator: (values) {
+  ///     if (values == null || values.isEmpty) {
+  ///       return 'Please select at least one fruit';
+  ///     }
+  ///     return null;
+  ///   },
+  ///   onSaved: (values) => selectedFruits = values ?? [],
+  /// )
+  /// ```
+  MultiselectDropdownFormField({
+    super.key,
+    this.label,
+    required this.items,
+    required this.displayStringForOption,
+    this.hint,
+    this.itemBuilder,
+    this.searchHint = 'Search...',
+    this.maxHeight = 300,
+    this.enabled = true,
+    this.maxSelections,
+    this.showSelectAll = true,
+    this.showNumberOfSelected = true,
+    this.focusSearchOnOpen = true,
+    this.innerPadding,
+    this.showClearSelectedItemButton = true,
+    this.minSelections,
+    this.minSelectionsErrorMessage,
+    this.decoration,
+    this.autoValidate = false,
+    super.onSaved,
+    super.validator,
+    super.initialValue,
+    super.autovalidateMode,
+  }) : super(
+          builder: (FormFieldState<List<T>> field) {
+            final state = field as _MultiselectDropdownFormFieldState<T>;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MultiselectDropdown<T>(
+                  label: label,
+                  items: items,
+                  displayStringForOption: displayStringForOption,
+                  hint: hint,
+                  selectedValues: field.value ?? [],
+                  itemBuilder: itemBuilder,
+                  onChanged: (values) {
+                    field.didChange(values);
+                    state._validateIfNeeded();
+                  },
+                  searchHint: searchHint,
+                  maxHeight: maxHeight,
+                  enabled: enabled,
+                  maxSelections: maxSelections,
+                  showSelectAll: showSelectAll,
+                  showNumberOfSelected: showNumberOfSelected,
+                  focusSearchOnOpen: focusSearchOnOpen,
+                  innerPadding: innerPadding,
+                  showClearSelectedItemButton: showClearSelectedItemButton,
+                  // Don't use the MultiselectDropdown's built-in validation
+                  // since we're handling it at the FormField level
+                  validator: null,
+                  autoValidate: false,
+                  minSelections: null,
+                  minSelectionsErrorMessage: null,
+                ),
+                if (field.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, top: 4),
+                    child: Text(
+                      field.errorText!,
+                      style: Theme.of(state.context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                            color: Theme.of(state.context).colorScheme.error,
+                          ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        );
+
+  @override
+  FormFieldState<List<T>> createState() =>
+      _MultiselectDropdownFormFieldState<T>();
+}
+
+class _MultiselectDropdownFormFieldState<T> extends FormFieldState<List<T>> {
+  MultiselectDropdownFormField<T> get _widget =>
+      widget as MultiselectDropdownFormField<T>;
+  String? _errorText;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the initial value
+    setValue(_widget.initialValue ?? []);
+  }
+
+  void _validateIfNeeded() {
+    if (_widget.autoValidate ||
+        _widget.autovalidateMode == AutovalidateMode.always ||
+        (_widget.autovalidateMode == AutovalidateMode.onUserInteraction &&
+            hasInteractedByUser)) {
+      validate();
+    }
+  }
+
+  @override
+  bool validate() {
+    final errorText = _getValidationError();
+    setState(() {
+      _errorText = errorText;
+    });
+    return errorText == null;
+  }
+
+  String? _getValidationError() {
+    // First check the custom validator if provided
+    if (_widget.validator != null) {
+      final error = _widget.validator!(value);
+      if (error != null) {
+        return error;
+      }
+    }
+
+    // Then check built-in validation for minimum selections
+    if (_widget.minSelections != null &&
+        (value == null || value!.length < _widget.minSelections!)) {
+      return _widget.minSelectionsErrorMessage ??
+          'Please select at least ${_widget.minSelections} item${_widget.minSelections! > 1 ? 's' : ''}';
+    }
+
+    return null;
+  }
+
+  @override
+  String? get errorText => _errorText;
+
+  @override
+  bool get hasError => _errorText != null;
+
+  @override
+  void reset() {
+    super.reset();
+    setValue(_widget.initialValue ?? []);
+    setState(() {
+      _errorText = null;
+    });
+  }
+}
 
 /// A customizable multi-select dropdown widget that allows users to select multiple items
 /// from a list with search functionality, validation, and various customization options.
@@ -159,7 +386,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
   List<T> _filteredItems = [];
   List<T> _selectedItems = [];
   bool _isOpen = false;
-  int _highlightedIndex = -1;
   String? _errorMessage;
 
   @override
@@ -222,7 +448,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
         final displayString = widget.displayStringForOption(item).toLowerCase();
         return displayString.contains(query);
       }).toList();
-      _highlightedIndex = _filteredItems.isNotEmpty ? 0 : -1;
     });
     _overlayEntry?.markNeedsBuild();
   }
@@ -257,7 +482,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     }
     _searchController.clear();
     _filteredItems = widget.items;
-    _highlightedIndex = -1;
     setState(() => _isOpen = false);
   }
 
@@ -369,29 +593,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
     return _validate();
   }
 
-  void _handleKeyPress(KeyEvent event) {
-    if (event is KeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-        setState(() {
-          _highlightedIndex = (_highlightedIndex + 1) % _filteredItems.length;
-        });
-        _overlayEntry?.markNeedsBuild();
-      } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-        setState(() {
-          _highlightedIndex = _highlightedIndex > 0
-              ? _highlightedIndex - 1
-              : _filteredItems.length - 1;
-        });
-        _overlayEntry?.markNeedsBuild();
-      } else if (event.logicalKey == LogicalKeyboardKey.enter &&
-          _highlightedIndex >= 0) {
-        _toggleItemSelection(_filteredItems[_highlightedIndex]);
-      } else if (event.logicalKey == LogicalKeyboardKey.escape) {
-        _closeDropdown();
-      }
-    }
-  }
-
   OverlayEntry _createOverlayEntry() {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
@@ -480,7 +681,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
                                     padding: const EdgeInsets.all(12),
                                     child: Focus(
                                       onKeyEvent: (node, event) {
-                                        _handleKeyPress(event);
                                         return KeyEventResult.handled;
                                       },
                                       child: TextField(
@@ -598,8 +798,6 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
                                         itemCount: _filteredItems.length,
                                         itemBuilder: (context, index) {
                                           final item = _filteredItems[index];
-                                          final isHighlighted =
-                                              index == _highlightedIndex;
                                           final isSelected =
                                               _selectedItems.contains(item);
                                           final isDisabled = !isSelected &&
@@ -621,19 +819,13 @@ class _MultiselectDropdownState<T> extends State<MultiselectDropdown<T>>
                                                   vertical: 12,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: isHighlighted
+                                                  color: isSelected
                                                       ? Theme.of(context)
                                                           .colorScheme
                                                           .primaryContainer
                                                           .withValues(
-                                                              alpha: 0.3)
-                                                      : isSelected
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .primaryContainer
-                                                              .withValues(
-                                                                  alpha: 0.1)
-                                                          : null,
+                                                              alpha: 0.1)
+                                                      : null,
                                                 ),
                                                 child: Row(
                                                   children: [
