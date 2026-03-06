@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'auth_service.dart';
+import 'package:interesting_flutter/core/services/authentication/auth_service.dart';
 
 /// Provider for the authentication service
 /// This provides the singleton instance of AuthenticationService

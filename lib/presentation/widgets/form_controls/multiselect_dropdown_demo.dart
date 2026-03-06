@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:interesting_flutter/domain/entity/skill_entity.dart';
+import 'package:interesting_flutter/data/models/skill_entity.dart';
 
 import 'multiselect_dropdown.dart';
 
