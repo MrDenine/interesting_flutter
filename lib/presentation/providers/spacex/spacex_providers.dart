@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_flutter/data/datasources/spacex_graphql_datasource.dart';
-import 'package:interesting_flutter/data/datasources/spacex_datasource_interface.dart';
+import 'package:interesting_flutter/data/data_sources/spacex_graphql_data_source.dart';
+import 'package:interesting_flutter/data/data_sources/spacex_data_source_interface.dart';
 import 'package:interesting_flutter/data/models/spacex/spacex_company_model.dart';
 import 'package:interesting_flutter/data/models/spacex/spacex_launch_model.dart';
 import 'package:interesting_flutter/data/models/spacex/spacex_rocket_model.dart';

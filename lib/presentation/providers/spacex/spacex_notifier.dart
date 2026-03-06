@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'spacex_state.dart';
-import 'package:interesting_flutter/data/datasources/spacex_datasource_interface.dart';
+import 'package:interesting_flutter/data/data_sources/spacex_data_source_interface.dart';
 
 /// State notifier for managing SpaceX data fetching state
 class SpaceXDataNotifier extends StateNotifier<SpaceXDataState> {
